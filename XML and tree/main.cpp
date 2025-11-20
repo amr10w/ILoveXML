@@ -95,18 +95,23 @@ Tree<std::string>* buildTree(const std::vector<Token>& tokens)
 
 }
 
-
-int main()
-{
-    std::ifstream file("sample.xml");
+std::string readFileToString(const std::string& filename) {
+    std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: Cannot open the file!" << std::endl;
-        return 1;
+        std::cerr << "Error: Cannot open the file: " << filename << std::endl;
+        return "";  // return empty string on error
     }
 
     std::stringstream buffer;
     buffer << file.rdbuf();
-    std::string xmlContent = buffer.str();
+    file.close();
+    return buffer.str();
+}
+
+
+int main()
+{
+    std::string xmlContent = readFileToString("sample.xml");
  
     std::vector<Token> tokens= tokenizeXML(xmlContent);
     for(auto &e:tokens)
@@ -117,5 +122,5 @@ int main()
     tree->print_preorder();
     
 
-    file.close();
+    
 }
