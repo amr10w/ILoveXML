@@ -1,12 +1,12 @@
 <users>
     <user>
-        <id>1
+        <id>1</id>
         <name>Ahmed Ali</name>
         <posts>
             <post>
                 <body>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </bodya>
+                </body>
                 <topics>
                     <topic>
                         economy
@@ -53,28 +53,29 @@
         </posts>
         <followers>
             <follower>
-                <id>1</id55>
+                <id>1</id>
             </follower>
         </followers>
     </user>
     <user>
         <id>3</id>
-        <name>Mohamed Sherif
+        <name>Mohamed Sherif</name>
         <posts>
             <post>
                 <body>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </top>
+                </body>
                 <topics>
                     <topic>
                         sports
                     </topic>
                 </topics>
             </post>
-        
+        </posts>
         <followers>
             <follower>
                 <id>1</id>
-            
+            </follower>
         </followers>
     </user>
+</users>
