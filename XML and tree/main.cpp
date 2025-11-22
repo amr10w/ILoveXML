@@ -23,14 +23,14 @@ std::vector<Token> tokenizeXML(const std::string& xmlContent)
             Token token;
             token.type = "tag";
             i++;
-            while(xmlContent[i]!='>')
+            while(i < (int)xmlContent.size() && xmlContent[i]!='>')
             {
                 token.text+=xmlContent[i];
                 i++;
             }
             tokens.push_back(token);
         }
-        else if(xmlContent[i]=='\n'||xmlContent[i]==' ')
+        else if(xmlContent[i]=='\n'||xmlContent[i]==' '&&xmlContent[i] == '\t' )
         {
             continue;
         }
@@ -53,6 +53,41 @@ std::vector<Token> tokenizeXML(const std::string& xmlContent)
     return tokens;
 
 }
+
+
+std::vector<Token> tokenizeLine(const std::string& line) {
+    std::vector<Token> tokens;
+    int i = 0;
+    while (i < (int)line.size()) {
+        if (line[i] == '<') {
+            
+            Token token;
+            token.type = "tag";
+            i++; 
+            while (i < (int)line.size() && line[i] != '>') {
+                token.text += line[i];
+                i++;
+            }
+            tokens.push_back(token);
+            if (i < (int)line.size() && line[i] == '>') i++; // skip '>'
+        } 
+        else if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n') {
+            i++; 
+        } 
+        else {
+            
+            Token token;
+            token.type = "value";
+            while (i < (int)line.size() && line[i] != '<') {
+                token.text += line[i];
+                i++;
+            }
+            tokens.push_back(token);
+        }
+    }
+    return tokens;
+}
+
 
 Tree<std::string>* buildTree(const std::vector<Token>& tokens)
 {
