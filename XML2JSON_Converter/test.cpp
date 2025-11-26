@@ -119,5 +119,5 @@ int main()
 
     Tree<string>* tree = buildTree(tokens);
 
-    node_to_json(tree->root);
+    node_to_json(tree->getroot());
 }

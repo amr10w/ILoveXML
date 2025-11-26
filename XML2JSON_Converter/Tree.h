@@ -43,6 +43,7 @@ public:
 
     void print_preorder();
     void print_prettified();
+    Node<T>* getroot();
 
 private:
     Node<T>* root{};
@@ -82,6 +83,11 @@ void Tree<T>::print_preorder() {
 template<typename T>
 void Tree<T>::print_prettified () {
     print_prettified_helper(root,"");
+}
+
+template<typename T>
+Node<T>*::getroot() {
+    return root;
 }
 
 template<typename T>
