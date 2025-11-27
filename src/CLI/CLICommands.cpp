@@ -27,7 +27,40 @@ int CLICommands::verifyCommand(const std::vector<std::string> &args)
     std::string filename = args[1];
     std::string content = readFileToString(filename);
     if(content=="") return ERR_FILE_NOT_FOUND;
-    std::cout << verify(content) << "\n";
+    bool result = verify(content);
 
-    return 0;
+    if(result)
+    {
+        std::cout << "Verification succeeded.\n";
+        return OK;
+    }
+    else{
+        std::cout << "Verification failed.\n";
+    }
+
+    ErrorInfo errors = countErrorSummary(content);
+    std::cout<<"Number Of Errors: "<<errors.count<<"\n";
+    
+    for(int i=0;i<errors.lines.size();i++)
+    {
+        std::cout<<errors.lines[i]<<" "<<errors.descriptions[i]<<"\n";
+    }
+    
+
+    if(!result&&args.size()> 2 )
+    {
+        if(args[2] == "-f" && args[3] == "-o")
+        {
+            std::string out =fixXml(content,errors);
+            writeToFile(args[4],out);
+            return OK;
+        }
+        else
+        {
+            std::cerr << "Usage: verify -i <filename> -f -o <filename>\n";
+            return ERR_INVALID_OPTION;
+        }
+    }
+    
+    return OK;
 }

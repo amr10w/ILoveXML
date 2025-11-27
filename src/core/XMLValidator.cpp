@@ -1,6 +1,8 @@
 #include<XMLValidator.h>
+#include "FileUtils.h"
 #include<iostream> 
 #include<stack> 
+#include<sstream>
 
 bool verify(const std::string& tokens)
 {
@@ -126,6 +128,157 @@ bool isValidFirstChar(const char c)
     if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
         return true;
     return false;
+}
+
+
+
+bool isClosingTag(const std::string & tag)
+{
+    return !tag.empty() && tag[0] == '/';
+}
+
+std::string getTagName(const std::string &tagText)
+{
+    int i=0;
+    if (tagText[i] == '/') i++;
+
+    std::string tagName = "";
+    while(i<tagText.length() &&tagText[i]!=' '&& tagText[i] != '/' && tagText[i] != '>' )
+    {
+        tagName+=tagText[i];
+        i++;
+    }
+    return tagName;
+}
+
+
+ErrorInfo countErrorSummary(const std::string &content)
+{
+
+    ErrorInfo errors;
+    std::string line;
+    std::istringstream stream(content);
+    std::stack<Token> tagStack;
+    int l=1;
+    while(std::getline(stream, line)) {
+        
+
+        
+        std::vector<Token> tokens = tokenizeLine(line);
+        for(auto &token:tokens)
+        {
+            if(token.type=="tag")
+            {
+                if(isClosingTag(token.text))
+                {
+                    if(tagStack.empty()|| tagStack.top().text!=getTagName(token.text) )
+                    {
+                        std::string cause=tagStack.top().text;
+                        int level=tagStack.top().level;
+                        tagStack.pop();
+                        if(!tagStack.empty()&&tagStack.top().text==getTagName(token.text))
+                        {
+                            
+                            std::string s="The missing closing for <" +cause+">";
+                            errors.addError(l-1,level,cause,"Missing",s);
+                            tagStack.pop();
+                        }
+                        else
+                        {
+                            std::string s="The mismatching closing for <" +cause+">";
+                            errors.addError(l,level,cause,"Mismatched",s);
+                        }
+                    }
+                    else
+                    {
+                        tagStack.pop();
+                    }
+                    
+                }
+                else
+                {
+                    if(!tagStack.empty()&&tagStack.top().level==token.level)
+                    {
+                        std::string s="The missing closing for <" + tagStack.top().text+">";
+                        errors.addError(l-1,tagStack.top().level,tagStack.top().text,"Missing",s);
+                        tagStack.pop();
+                    }
+                    
+                    tagStack.push(token);
+                }
+            }
+        }
+        l++;
+    }
+
+    while(!tagStack.empty())
+    {
+        std::string s="The missing closing for <" +tagStack.top().text+">";
+        errors.addError(l,tagStack.top().level,tagStack.top().text,"Missing",s);
+        tagStack.pop();
+
+    }
+    return errors;
+
+}
+
+
+std::string fixXml(const std::string & content,const ErrorInfo &errors )
+{
+    std::string outputXML="";
+    std::istringstream stream(content);
+    std::string line;
+    int i=0;
+    for (int l = 1; std::getline(stream, line); l++) {
+        if(i < errors.count && l==errors.lines[i])
+        {
+            if(errors.tags[i]!="id" && errors.tags[i]!="name")
+            {
+                for(int j=0;j<errors.levels[i]*4;j++)
+                {
+                    outputXML+=" ";
+                }
+                outputXML+="</"+errors.tags[i]+">\n";
+                
+            }
+            else
+            {
+                if(errors.types[i] == "Mismatched")
+                {
+                    int x;
+                    for(int j=0;line[j]!='>';j++)
+                    {
+                        outputXML+=line[j];
+                        x=j;
+                    }
+                    for(int j=x+1;line[j]!='<';j++)
+                    {
+                        outputXML+=line[j];
+                    }
+                    outputXML+="</"+errors.tags[i]+">\n";
+                }
+                else 
+                    outputXML+=line + "</"+errors.tags[i]+">\n";
+            }
+            i++;
+        }
+        else
+        {
+            outputXML+=line +"\n";
+        }
+    }
+
+     while(i<errors.count)
+    {
+        for(int j=0;j<errors.levels[i]*4;j++)
+        {
+            outputXML+=" ";
+        }
+        outputXML+="</"+errors.tags[i]+">";
+        i++;
+    }
+    return outputXML;
+
 }
 
 
