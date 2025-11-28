@@ -67,4 +67,86 @@ std::vector<Token> tokenizeLine(const std::string& line) {
 }
 
 
+std::vector<Token> tokenizeXML(const std::string& xmlContent)
+{
+    std::vector<Token> tokens;
+
+    for (int i = 0; i < xmlContent.length(); i++)
+    {
+        if (xmlContent[i] == '<')
+        {
+            Token token;
+            token.type = "tag";
+            i++;
+            while (xmlContent[i] != '>')
+            {
+                token.text += xmlContent[i];
+                i++;
+            }
+            tokens.push_back(token);
+        }
+        else if (xmlContent[i] == '\n' || xmlContent[i] == ' ')
+        {
+            continue;
+        }
+        else
+        {
+            Token token;
+            token.type = "value";
+            while (xmlContent[i] != '<')
+            {
+                token.text += xmlContent[i];
+                i++;
+            }
+            i--; // step back so the loop sees '<'
+            tokens.push_back(token);
+        }
+    }
+
+    return tokens;
+}
+
+Tree<std::string>* buildTree(const std::vector<Token>& tokens)
+{
+    Node<std::string>* root = nullptr;
+    std::stack<Node<std::string>*> st;
+
+    for (auto& e : tokens)
+    {
+        if (e.type == "tag")
+        {
+            // Opening tag: <tag>
+            if (!e.text.empty() && e.text[0] != '/')
+            {
+                Node<std::string>* node = new Node<std::string>(e.text);
+
+                if (!st.empty())
+                {
+                    Node<std::string>* parent = st.top();
+                    parent->addChild(node);
+                }
+                else
+                {
+                    root = node;
+                }
+
+                st.push(node);
+            }
+            // Closing tag: </tag>
+            else if (!e.text.empty())
+            {
+                st.pop();
+            }
+        }
+        else // value
+        {
+            Node<std::string>* node = new Node<std::string>(e.text);
+            Node<std::string>* parent = st.top();
+            parent->addChild(node);
+        }
+    }
+
+    return new Tree<std::string>(root);
+}
+
 

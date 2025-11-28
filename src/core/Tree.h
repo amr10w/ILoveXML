@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
-using namespace std;
+
 
 // =====================
 // Node Structure
@@ -13,7 +13,7 @@ using namespace std;
 template<typename T>
 struct Node {
     T data{};
-    vector<Node<T>*> children ;
+    std::vector<Node<T>*> children ;
     
     Node(T data);
     void addChild(Node<T>* node);
@@ -52,7 +52,7 @@ private:
     std::string prettifyingString{};
     void destroy(Node<T>* node);
     void print_preorder_helper(Node<T>* node);
-    void print_prettified_helper(Node<T>* node, string indentation);
+    void print_prettified_helper(Node<T>* node, std::string indentation);
 };
 
 
@@ -79,7 +79,7 @@ Tree<T>::~Tree() {
 template<typename T>
 void Tree<T>::print_preorder() {
     print_preorder_helper(root);
-    cout << "\n";
+    std::cout << "\n";
 }
 
 template<typename T>
@@ -119,9 +119,9 @@ void Tree<T>::print_preorder_helper(Node<T>* node) {
     if (!node) return;
 
     if (node->children.empty())
-        cout << node->data << " ";
+        std::cout << node->data << " ";
     else
-        cout << "<" << node->data << "> ";
+        std::cout << "<" << node->data << "> ";
 
     for (auto child : node->children)
         print_preorder_helper(child);
@@ -129,7 +129,7 @@ void Tree<T>::print_preorder_helper(Node<T>* node) {
 
 
 template <typename T>
-void Tree<T>::print_prettified_helper(Node<T>* node, string indentation) {
+void Tree<T>::print_prettified_helper(Node<T>* node, std::string indentation) {
     if (!node) return;
 
     bool preLeaf = (node->children.size() == 1) && (node->children[0]->children.empty());
@@ -155,105 +155,10 @@ void Tree<T>::print_prettified_helper(Node<T>* node, string indentation) {
 
 
 
-// =====================
-// XML Token + Parser
-// =====================
-
-// Token structure
-struct Token {
-    string type;   // "tag" or "value"
-    string text;
-};
-
-
-// =====================
-// XML Tokenizer
-// =====================
-inline vector<Token> tokenizeXML(const string& xmlContent)
-{
-    vector<Token> tokens;
-
-    for (int i = 0; i < xmlContent.length(); i++)
-    {
-        if (xmlContent[i] == '<')
-        {
-            Token token;
-            token.type = "tag";
-            i++;
-            while (xmlContent[i] != '>')
-            {
-                token.text += xmlContent[i];
-                i++;
-            }
-            tokens.push_back(token);
-        }
-        else if (xmlContent[i] == '\n' || xmlContent[i] == ' ')
-        {
-            continue;
-        }
-        else
-        {
-            Token token;
-            token.type = "value";
-            while (xmlContent[i] != '<')
-            {
-                token.text += xmlContent[i];
-                i++;
-            }
-            i--; // step back so the loop sees '<'
-            tokens.push_back(token);
-        }
-    }
-
-    return tokens;
-}
-
-
 
 // =====================
 // Build Tree From Tokens
 // =====================
-inline Tree<string>* buildTree(const vector<Token>& tokens)
-{
-    Node<string>* root = nullptr;
-    stack<Node<string>*> st;
 
-    for (auto& e : tokens)
-    {
-        if (e.type == "tag")
-        {
-            // Opening tag: <tag>
-            if (!e.text.empty() && e.text[0] != '/')
-            {
-                Node<string>* node = new Node<string>(e.text);
-
-                if (!st.empty())
-                {
-                    Node<string>* parent = st.top();
-                    parent->addChild(node);
-                }
-                else
-                {
-                    root = node;
-                }
-
-                st.push(node);
-            }
-            // Closing tag: </tag>
-            else if (!e.text.empty())
-            {
-                st.pop();
-            }
-        }
-        else // value
-        {
-            Node<string>* node = new Node<string>(e.text);
-            Node<string>* parent = st.top();
-            parent->addChild(node);
-        }
-    }
-
-    return new Tree<string>(root);
-}
 
 #endif // TREE_H

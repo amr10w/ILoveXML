@@ -3,6 +3,9 @@ add_library(core STATIC
     FileUtils.h
     XMLValidator.cpp
     XMLValidator.h
+    XMLMinifier.h
+    XMLMinifier.cpp
+    Tree.h
 )
 
 target_link_libraries(core

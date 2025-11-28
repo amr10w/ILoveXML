@@ -1,5 +1,7 @@
 #include "FileUtils.h"
-#include<XMLValidator.h>
+#include "XMLValidator.h"
+#include "XMLMinifier.h"
+#include "Tree.h"
 #include <vector>
 
 enum ErrorCode {
@@ -15,4 +17,9 @@ public:
     int handle(int argc, char* argv[]);
 private:
     int verifyCommand(const std::vector<std::string>& args);
+    int minifyCommand(const std::vector<std::string>& args);
+    int prettifyCommand(const std::vector<std::string>& args);
+    int xmlToJsonCommand(const std::vector<std::string>& args);
+    int compressCommand(const std::vector<std::string>& args);
+    int decompressCommand(const std::vector<std::string>& args);
 };
