@@ -127,22 +127,26 @@ int CLICommands::xmlToJsonCommand(const std::vector<std::string> &args)
 
 int CLICommands::compressCommand(const std::vector<std::string> &args)
 {
-    if(args.size() < 2 || args[0] != "-i" || args[2]!= "-o") {
+    if(args.size() < 4 || args[0] != "-i" || args[2]!= "-o") {
         std::cerr<<"Invalid option\n";
         std::cerr << "Usage: compress -i <filename> -o <filename>\n";
         return ERR_INVALID_OPTION;
     }
+
+    BPE_compress(args[1], args[3]);
 
     return OK;
 }
 
 int CLICommands::decompressCommand(const std::vector<std::string> &args)
 {
-    if(args.size() < 2 || args[0] != "-i" || args[2]!= "-o") {
+    if(args.size() < 4 || args[0] != "-i" || args[2]!= "-o") {
         std::cerr<<"Invalid option\n";
         std::cerr << "Usage: decompress -i <filename> -o <filename>\n";
         return ERR_INVALID_OPTION;
     }
+
+    BPE_decompress(args[1], args[3]);
 
     return OK;
 }
