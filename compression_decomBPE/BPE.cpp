@@ -1,16 +1,11 @@
 #include "BPE.h"
 #include "SimpleMap.h"
-#include <fstream>
 #include <sstream>
-#include <unordered_map>
 #include <vector>
 #include <iostream>
-#include <set>
-
-using namespace std;
 
 // Build a frequency table of adjacent character pairs
-SimpleMap<int, int> BPE::buildFrequencyTable(const string &text)
+SimpleMap<int, int> BPE::buildFrequencyTable(const std::string &text)
 {
     SimpleMap<int, int> freqTable;
     if (text.size() < 2)
@@ -49,9 +44,9 @@ int BPE::findMostFrequentPair(SimpleMap<int, int> &freqTable)
 }
 
 // Apply pair replacement using a single character symbol
-string BPE::applyPair(const string &text, const int &pair, unsigned char newSymbol)
+std::string BPE::applyPair(const std::string &text, const int &pair, unsigned char newSymbol)
 {
-    string out;
+    std::string out;
     out.reserve(text.size()); // Optimization
 
     unsigned char first = (pair >> 8) & 0xFF;
@@ -77,10 +72,10 @@ string BPE::applyPair(const string &text, const int &pair, unsigned char newSymb
 }
 
 // Compress XML input safely
-CompressedData BPE::compress(const string &xmlText)
+CompressedData BPE::compress(const std::string &xmlText)
 {
     CompressedData result;
-    string text = xmlText;
+    std::string text = xmlText;
 
     // USE INT HERE!
     int nextToken = 128;
@@ -106,7 +101,7 @@ CompressedData BPE::compress(const string &xmlText)
         // Unpack for storage
         unsigned char first = (best >> 8) & 0xFF;
         unsigned char second = best & 0xFF;
-        string bestPair = {(char)first, (char)second};
+        std::string bestPair = {(char)first, (char)second};
 
         // Store in order.
         // Token 128 replaces "AB"
@@ -118,7 +113,7 @@ CompressedData BPE::compress(const string &xmlText)
 
         if (100 * iter / MAX_ITER % 10 == 0)
         {
-            cout << "\n[+] Completed: " << 100 * iter / MAX_ITER << "%\n";
+            std::cout << "\n[+] Completed: " << 100 * iter / MAX_ITER << "%\n";
         }
 
         nextToken++;
@@ -126,24 +121,24 @@ CompressedData BPE::compress(const string &xmlText)
     }
 
     result.encodedText = text;
-    cout << "\n[+] Final encoded text length (bytes): " << result.encodedText.size() << "\n";
+    std::cout << "\n[+] Final encoded text length (bytes): " << result.encodedText.size() << "\n";
     return result;
 }
 
-string BPE::decompress(const CompressedData &compressedData)
+std::string BPE::decompress(const CompressedData &compressedData)
 {
-    string currentText = compressedData.encodedText;
+    std::string currentText = compressedData.encodedText;
 
     // Iterate backwards through the dictionary (LIFO order)
     size_t tokens = compressedData.dictionary.size();
     for (int i = tokens - 1; i >= 0; --i)
     {
 
-        string pair = compressedData.dictionary[i];
+        std::string pair = compressedData.dictionary[i];
         unsigned char targetSymbol = (unsigned char)(128 + i); // The token to find
 
         // 1. Create a buffer for the NEXT version of the text
-        string nextText;
+        std::string nextText;
         // Optimization: Reserve slightly more memory to prevent re-allocations
         nextText.reserve(currentText.size() * 1.1);
 
@@ -166,64 +161,61 @@ string BPE::decompress(const CompressedData &compressedData)
         currentText = std::move(nextText);
         
         if (100 * (tokens - i) / tokens % 10 == 0) {
-            cout << "\n[+] Completed: " << 100 * (tokens - i) / tokens << "%\n";
+            std::cout << "\n[+] Completed: " << 100 * (tokens - i) / tokens << "%\n";
         }
     }
 
     return currentText;
 }
 
-bool BPE::saveToFile(const string &path, const CompressedData &data)
+std::string BPE::to_string(const CompressedData &data)
 {
-    ofstream file(path, ios::binary);
-    if (!file)
-        return false;
+    std::stringstream output;
 
     // Write Header
     size_t count = data.dictionary.size();
-    file.write((char *)&count, sizeof(size_t));
+    output.write((char *)&count, sizeof(size_t));
 
     // Write Dictionary (Fixed 2 bytes per entry)
     for (const auto &pair : data.dictionary)
     {
-        file.write(pair.data(), 2); // Safe for binary
+        output.write(pair.data(), 2); // Safe for binary
     }
 
     // Write Separator (Optional, helps debugging)
     char sep = 0x00;
-    file.write(&sep, 1);
+    output.write(&sep, 1);
 
     // Write Body
-    file.write(data.encodedText.data(), data.encodedText.size());
-    return true;
+    output.write(data.encodedText.data(), data.encodedText.size());
+    return output.str();
 }
 
-CompressedData BPE::loadFromFile(const string &path)
+CompressedData BPE::from_string(const std::string &data)
 {
-    ifstream file(path, ios::binary);
     CompressedData out;
-    if (!file)
-        return out;
+
+    std::stringstream input(data, std::ios::binary);
 
     // Read Count
     size_t count = 0;
-    file.read((char *)&count, sizeof(size_t));
+    input.read((char *)&count, sizeof(size_t));
 
     // Read Dictionary
     for (size_t i = 0; i < count; ++i)
     {
         char buffer[2];
-        file.read(buffer, 2);
-        out.dictionary.push_back(string(buffer, 2));
+        input.read(buffer, 2);
+        out.dictionary.push_back(std::string(buffer, 2));
     }
 
     // Read Separator
     char sep;
-    file.read(&sep, 1);
+    input.read(&sep, 1);
 
     // Read Rest of file
-    stringstream ss;
-    ss << file.rdbuf();
+    std::stringstream ss;
+    ss << input.rdbuf();
     out.encodedText = ss.str();
 
     return out;
