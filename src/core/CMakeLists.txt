@@ -13,8 +13,10 @@ add_library(core STATIC
     XML_Compress.cpp
     XML_Decompress.h
     XML_Decompress.cpp
-    Grpah.h
-    Grpah.cpp
+    Graph.h
+    Graph.cpp
+    Mutual.cpp
+    Mutual.h
 )
 
 target_link_libraries(core

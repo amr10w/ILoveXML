@@ -17,6 +17,7 @@ int CLICommands::handle(int argc, char *argv[])
     if(cmd == "json") return xmlToJsonCommand(args);
     if(cmd == "compress") return compressCommand(args);
     if(cmd == "decompress") return decompressCommand(args);
+    if(cmd == "mutual") return mutualCommand(args);
     
 
     std::cerr << "Unknown command: " << cmd << "\n";
@@ -150,3 +151,54 @@ int CLICommands::decompressCommand(const std::vector<std::string> &args)
 
     return OK;
 }
+
+int CLICommands::mutualCommand(const std::vector<std::string> &args)
+{
+    if(args.size() != 4 || args[0] != "-i"  || args[2]!= "-ids") {
+        std::cerr<<"Invalid option\n";
+        std::cerr << "Usage: mutual -i <filename> -ids <ids>\n";
+        return ERR_INVALID_OPTION;
+    }
+
+    // xml_editor mutual -i input_file.xml -ids 1,2,3
+    std::string filename = args[1];
+    std::string content = readFileToString(filename);
+    if(content == "") return ERR_FILE_NOT_FOUND;
+  
+    Graph graph(content);
+    int num_users = graph.getNumberOfUsers();
+
+    std::string ids = args[3];
+    std::vector<int> idsVector;
+
+    std::stringstream ss(ids);
+    std::string token;
+
+    while (std::getline(ss, token, ',')) {
+        try {
+            int num = std::stoi(token);
+            if (num < 0 || num > num_users) {
+                std::cerr << "Invalid option\n";
+                std::cerr << "Ids must be between 0 and " << num_users << "\n";
+                return ERR_INVALID_OPTION;
+            }
+            idsVector.push_back(num);
+        } catch (...) {
+            std::cerr << "Invalid option\n";
+            std::cerr << "Ids must be integers\n";
+            return ERR_INVALID_OPTION;
+        }
+    }
+
+    if (idsVector.size() < 2) {
+    std::cerr << "Error: At least 2 IDs are required to compute mutual followers\n";
+    std::cerr << "Usage: mutual -i <filename> -ids <id1,id2,...>\n";
+    return ERR_INVALID_OPTION;
+    }
+
+    std::vector<int> mutual = computeMutualFollowers(graph, idsVector);
+    printVector(mutual);
+
+    return OK;
+}
+

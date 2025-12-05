@@ -4,6 +4,8 @@
 #include "Tree.h"
 #include "XML_Compress.h"
 #include "XML_Decompress.h"
+#include "Graph.h"
+#include "Mutual.h"
 #include <vector>
 
 enum ErrorCode {
@@ -24,4 +26,5 @@ private:
     int xmlToJsonCommand(const std::vector<std::string>& args);
     int compressCommand(const std::vector<std::string>& args);
     int decompressCommand(const std::vector<std::string>& args);
+    int mutualCommand(const std::vector<std::string>& args);
 };

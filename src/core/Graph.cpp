@@ -1,8 +1,8 @@
 #include "Graph.h"
 
-Graph::Graph(const std::string &file_name)
+Graph::Graph(const std::string &content)
 {
-    std::string content = readFileToString(file_name);
+    
     std::vector<Token> tokens= tokenizeXML(content);
     int users =countUsers(tokens);
     graph.resize(users+1);
@@ -132,3 +132,7 @@ bool Graph::hasEdge(int from,int to)
     return false;
 }
 
+int Graph::getNumberOfUsers()
+{
+    return graph.size();
+}
