@@ -11,7 +11,12 @@ add_library(UI_Pages STATIC
     VerificationPage.cpp
     VerificationPage.ui
     resources.qrc
-   
+    formattingPage.cpp
+    formattingPage.h
+    formattingPage.ui
+    minifyingPage.cpp
+    minifyingPage.h
+    minifyingPage.ui
 )
 
 set_property(TARGET UI_Pages PROPERTY AUTORCC ON)
