@@ -13,8 +13,8 @@ using namespace std;
 template<typename T>
 struct Node {
     T data{};
-    vector<Node<T>*> children;
-
+    vector<Node<T>*> children ;
+    
     Node(T data);
     void addChild(Node<T>* node);
 };
@@ -43,10 +43,13 @@ public:
 
     void print_preorder();
     void print_prettified();
+    std::string getPrettifyingString();
+
 
 private:
     Node<T>* root{};
     Node<T>* copy(Node<T>* item);
+    std::string prettifyingString{};
     void destroy(Node<T>* node);
     void print_preorder_helper(Node<T>* node);
     void print_prettified_helper(Node<T>* node, string indentation);
@@ -82,6 +85,12 @@ void Tree<T>::print_preorder() {
 template<typename T>
 void Tree<T>::print_prettified () {
     print_prettified_helper(root,"");
+}
+
+template <typename T>
+inline std::string Tree<T>::getPrettifyingString()
+{
+    return prettifyingString;
 }
 
 template<typename T>
@@ -126,18 +135,20 @@ void Tree<T>::print_prettified_helper(Node<T>* node, string indentation) {
     bool preLeaf = (node->children.size() == 1) && (node->children[0]->children.empty());
 
     if (!preLeaf) {
-        cout << indentation << "<" << node->data << ">\n";
+        prettifyingString+=indentation+"<"+node->data+">\n";
+        
 
         for (int i = 0; i < node->children.size(); i++) {
             print_prettified_helper(node->children[i],indentation + "   ");
         }
-
-        cout << indentation << "</" << node->data << ">\n";
+        prettifyingString += indentation + "</" + node->data + ">\n";
+        
     }
     else {
-        cout << indentation << "<" << node->data << ">";
-        cout << node->children[0]->data;
-        cout << "</" << node->data << ">\n";
+        prettifyingString+= indentation + "<" +node->data+ ">";
+        prettifyingString+= node->children[0]->data;
+        prettifyingString += "</"+node->data+">\n";
+        
     }
 }
 
