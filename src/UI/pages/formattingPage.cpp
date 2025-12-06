@@ -71,7 +71,6 @@ void FormattingPage::onBrowseFile()
     ui->outputTextEdit->setVisible(false);
     ui->downloadButton->setVisible(false);
     
-    QMessageBox::information(this, "Success", "File loaded successfully!");
 }
 
 void FormattingPage::onPrettifyXML()
@@ -147,7 +146,6 @@ void FormattingPage::onDownload()
     out << outputXML;
     outFile.close();
     
-    QMessageBox::information(this, "Success", "File saved successfully to:\n" + saveFileName);
 }
 
 void FormattingPage::updateOutputVisibility()
@@ -162,7 +160,5 @@ void FormattingPage::showMessage(const QString& message, bool isError)
 {
     if (isError) {
         QMessageBox::critical(this, "Error", message);
-    } else {
-        QMessageBox::information(this, "Success", message);
-    }
+    } 
 }

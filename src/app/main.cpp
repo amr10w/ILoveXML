@@ -1,4 +1,4 @@
-#include "FormattingPage.h"
+#include "minifyingPage.h"
 #include "CLICommands.h"
 #include <QApplication>
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     {
         // CASE 2 — no arguments → launch GUI (FormattingPage instead of MainWindow)
         QApplication a(argc, argv);
-        FormattingPage w;
+        MinifyingPage w;
         w.show();
         return a.exec();
     }
