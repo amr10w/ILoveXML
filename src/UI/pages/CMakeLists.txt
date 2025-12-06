@@ -5,6 +5,10 @@ add_library(UI_Pages STATIC
     WelcomePage.h
     WelcomePage.ui
     resources.qrc
+    formattingPage.cpp
+    formattingPage.h
+    formattingPage.ui
+  
    
 )
 
