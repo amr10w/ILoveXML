@@ -233,9 +233,8 @@ int CLICommands::mutualCommand(const std::vector<std::string> &args)
     std::string filename = args[1];
     std::string content = readFileToString(filename);
     if(content == "") return ERR_FILE_NOT_FOUND;
-  
+
     Graph graph(content);
-    int num_users = graph.getNumberOfUsers();
 
     std::string ids = args[3];
     std::vector<int> idsVector;
