@@ -20,6 +20,9 @@ add_library(UI_Pages STATIC
     json_converter_page.ui
     json_converter_page.h
     json_converter_page.cpp
+    CompressPage.cpp
+    CompressPage.h
+    CompressPage.ui
 )
 
 set_property(TARGET UI_Pages PROPERTY AUTORCC ON)

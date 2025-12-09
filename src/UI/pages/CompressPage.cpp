@@ -1,0 +1,195 @@
+#include "CompressPage.h"
+#include "../../core/FileUtils.h"
+#include "../../core/XML_Compress.h"
+// Assuming your .ui file is now named ui_CompressPage.h
+#include "ui_CompressPage.h" 
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QFileInfo>
+#include <QScrollBar>
+
+
+#include "../../core/XML_Compress.h" 
+// Assuming the function signature is: std::string compressXML(const std::string& xmlContent);
+
+CompressPage::CompressPage(QWidget *parent)
+    : QScrollArea(parent)
+    , ui(new Ui::CompressPage)
+    , originalSize(0)
+    // Renamed size variable
+    , compressedSize(0) 
+{
+    ui->setupUi(this);
+    setFixedSize(900, 750);
+    
+    // Initially hide output section and stats
+    ui->statsWidget->setVisible(false);
+    ui->outputLabel->setVisible(false);
+    ui->outputTextEdit->setVisible(false);
+    ui->downloadButton->setVisible(false);
+    
+    // Set placeholder (same as your screenshot)
+    ui->inputTextEdit->setPlaceholderText("Paste your XML content here...");
+    
+    // Connect signals
+    connect(ui->backButton, &QPushButton::clicked, this, &CompressPage::onBackToOperations);
+    connect(ui->browseButton, &QPushButton::clicked, this, &CompressPage::onBrowseFile);
+    // Connect to the new slot
+    connect(ui->minifyButton, &QPushButton::clicked, this, &CompressPage::onCompressXML); 
+    connect(ui->downloadButton, &QPushButton::clicked, this, &CompressPage::onDownload);
+}
+
+CompressPage::~CompressPage()
+{
+    delete ui;
+}
+
+void CompressPage::onBackToOperations()
+{
+    this->close();
+}
+
+void CompressPage::onBrowseFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        tr("Browse XML File"),
+        QString(),
+        tr("XML Files (*.xml);;All Files (*)")
+    );
+    
+    if (fileName.isEmpty())
+        return;
+    
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Cannot open file: " + fileName);
+        return;
+    }
+    
+    QTextStream in(&file);
+    inputXML = in.readAll();
+    file.close();
+    
+    currentFilePath = fileName;
+    ui->inputTextEdit->setPlainText(inputXML);
+    
+    // Hide output when new file is loaded
+    ui->statsWidget->setVisible(false);
+    ui->outputLabel->setVisible(false);
+    ui->outputTextEdit->setVisible(false);
+    ui->downloadButton->setVisible(false);
+}
+
+// Renamed core logic function
+void CompressPage::onCompressXML()
+{
+    inputXML = ui->inputTextEdit->toPlainText();
+    
+    if (inputXML.trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Warning", "Please provide XML content first!");
+        return;
+    }
+    
+    try {
+        // Calculate original size
+        originalSize = inputXML.toUtf8().size();
+        
+        // Convert QString to std::string for the utility function
+        std::string xmlContentStd = inputXML.toStdString();
+        
+        // Use the new compression function
+        std::string compressedXmlStd = compressXML(xmlContentStd); 
+        
+        // Convert the result back to QString
+        outputXML = QString::fromStdString(compressedXmlStd);
+        
+        // Calculate compressed size
+        compressedSize = outputXML.toUtf8().size(); 
+        
+        // Display in output text edit
+        ui->outputTextEdit->setPlainText(outputXML);
+        
+        // Update statistics
+        updateStatistics();
+        
+        // Show output section
+        updateOutputVisibility();
+        
+        // Scroll to output
+        QScrollBar *scrollBar = ui->outputTextEdit->verticalScrollBar();
+        if (scrollBar) {
+            scrollBar->setValue(0);
+        }
+        
+        
+    } catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", 
+            QString("Failed to compress XML: %1").arg(e.what()));
+    } catch (...) {
+        QMessageBox::critical(this, "Error", 
+            "An unknown error occurred while compressing XML");
+    }
+}
+
+
+void CompressPage::updateStatistics()
+{
+    // Update size labels (Note: Ensure your UI labels are correctly mapped)
+    ui->originalSizeLabel->setText(QString::number(originalSize) + " bytes");
+    // Updated label text
+    ui->minifiedSizeLabel->setText(QString::number(compressedSize) + " bytes"); 
+    
+    // Calculate reduction
+    qint64 savedBytes = originalSize - compressedSize;
+    double percentage = originalSize > 0 ? 
+        ((double)savedBytes * 100.0 / originalSize) : 0.0;
+    
+    ui->reductionLabel->setText(QString::number(percentage, 'f', 2) + "%");
+}
+
+void CompressPage::updateOutputVisibility()
+{
+    bool hasOutput = !outputXML.isEmpty();
+    ui->statsWidget->setVisible(hasOutput);
+    ui->outputLabel->setVisible(hasOutput);
+    ui->outputTextEdit->setVisible(hasOutput);
+    ui->downloadButton->setVisible(hasOutput);
+}
+
+void CompressPage::onDownload()
+{
+    if (outputXML.isEmpty()) {
+        QMessageBox::warning(this, "Warning", "No compressed XML to download!");
+        return;
+    }
+    
+    QString saveFileName = QFileDialog::getSaveFileName(
+        this,
+        tr("Save Compressed XML"),
+        "compressed.xml", // Changed default file name
+        tr("XML Files (*.xml);;All Files (*)")
+    );
+    
+    if (saveFileName.isEmpty())
+        return;
+    
+    QFile outFile(saveFileName);
+    if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Cannot save file!");
+        return;
+    }
+    
+    QTextStream out(&outFile);
+    out << outputXML;
+    outFile.close();
+}
+
+void CompressPage::showMessage(const QString& message, bool isError)
+{
+    if (isError) {
+        QMessageBox::critical(this, "Error", message);
+    } 
+}
