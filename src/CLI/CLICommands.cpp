@@ -19,6 +19,8 @@ int CLICommands::handle(int argc, char *argv[])
     if(cmd == "decompress") return decompressCommand(args);
     if(cmd == "mutual") return mutualCommand(args);
     if(cmd == "draw") return visualizerCommand(args);
+    if(cmd == "most_active") return mostActiveCommand(args);
+    if(cmd == "most_influencer") return mostInfluencerCommand(args);
     
 
     std::cerr << "Unknown command: " << cmd << "\n";
@@ -290,5 +292,55 @@ int CLICommands::visualizerCommand(const std::vector<std::string> &args)
     
     Graph graph(content);
     Visualizer(graph,args[3]);
+    return OK;
+}
+
+// xml_editor most_active -i input_file.xml
+// xml_editor most_influencer -i input_file.xm
+int CLICommands::mostActiveCommand(const std::vector<std::string> &args)
+{
+    if(args.size() != 2 || args[0] != "-i") {
+        std::cerr<<"Invalid option\n";
+        std::cerr << "Usage: most_active -i <filename.xml>\n";
+        return ERR_INVALID_OPTION;
+    }
+
+    if(args[1].length() < 4 || args[1].substr(args[1].length() - 4) != ".xml") {
+        std::cerr << "Invalid option\n";
+        std::cerr << "Input file must be a .xml file\n";
+        return ERR_INVALID_OPTION;
+    }
+
+    std::string filename = args[1];
+    std::string content = readFileToString(filename);
+    if(content == "") return ERR_FILE_NOT_FOUND;
+    
+    Graph graph(content);
+    int mostActivePersonId = graph.getMostActivePersonId();
+    std::cout << mostActivePersonId << std::endl;
+    return OK;
+}
+
+int CLICommands::mostInfluencerCommand(const std::vector<std::string> &args)
+{
+    if(args.size() != 2 || args[0] != "-i") {
+        std::cerr<<"Invalid option\n";
+        std::cerr << "Usage: most_influencer -i <filename.xml>\n";
+        return ERR_INVALID_OPTION;
+    }
+
+    if(args[1].length() < 4 || args[1].substr(args[1].length() - 4) != ".xml") {
+        std::cerr << "Invalid option\n";
+        std::cerr << "Input file must be a .xml file\n";
+        return ERR_INVALID_OPTION;
+    }
+
+    std::string filename = args[1];
+    std::string content = readFileToString(filename);
+    if(content == "") return ERR_FILE_NOT_FOUND;
+    
+    Graph graph(content);
+    int mostInfluencerPersonId = graph.getMostInfluencerId();
+    std::cout << mostInfluencerPersonId << std::endl;
     return OK;
 }

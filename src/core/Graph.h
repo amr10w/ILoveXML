@@ -26,6 +26,7 @@ public:
     int getNumberOfUsers();
     GRAPH getGraph() const;
     int getMostInfluencerId();
+    int getMostActivePersonId();
 
 };
 #endif
