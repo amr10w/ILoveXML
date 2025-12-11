@@ -23,6 +23,7 @@ GraphPage::GraphPage(QWidget *parent)
     setFixedSize(900, 750);
     // Initially hide output section
     ui->outputLabel->setVisible(false);
+    ui->graphScrollArea->setVisible(false);
     ui->graphDisplayLabel->setVisible(false);
     ui->downloadButton->setVisible(false);
     
@@ -73,6 +74,7 @@ void GraphPage::onBrowseFile()
     
     // Hide output when new file is loaded
     ui->outputLabel->setVisible(false);
+    ui->graphScrollArea->setVisible(false);
     ui->graphDisplayLabel->setVisible(false);
     ui->downloadButton->setVisible(false);
     
@@ -329,6 +331,7 @@ void GraphPage::updateOutputVisibility()
 {
     bool hasOutput = !graphImage.isNull();
     ui->outputLabel->setVisible(hasOutput);
+    ui->graphScrollArea->setVisible(hasOutput);
     ui->graphDisplayLabel->setVisible(hasOutput);
     ui->downloadButton->setVisible(hasOutput);
 }
