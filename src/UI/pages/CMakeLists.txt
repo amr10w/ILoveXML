@@ -4,13 +4,19 @@ add_library(UI_Pages STATIC
     WelcomePage.cpp
     WelcomePage.h
     WelcomePage.ui
+    TeamPage.cpp      
+    TeamPage.h       
+    TeamPage.ui       
+    resources.qrc
+    ProcessingPage.cpp
+    ProcessingPage.h
+    ProcessingPage.ui
     Aboutpage.cpp
     Aboutpage.h
     Aboutpage.ui
     VerificationPage.h
     VerificationPage.cpp
     VerificationPage.ui
-    resources.qrc
     formattingPage.cpp
     formattingPage.h
     formattingPage.ui
@@ -23,6 +29,7 @@ add_library(UI_Pages STATIC
     postsearch.cpp
     postsearch.h
 )
+
 
 set_property(TARGET UI_Pages PROPERTY AUTORCC ON)
 
