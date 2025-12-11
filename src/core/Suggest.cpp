@@ -47,7 +47,7 @@ std::vector<int> suggest(Graph& graph, int id)
     return removeValues(suggest,followings);
 }
 
-void printsuggestions(const std::vector<int>& v)
+void printSuggestions(const std::vector<int>& v)
 {
     if (v.empty())
     {
@@ -70,7 +70,7 @@ void printsuggestions(const std::vector<int>& v)
 //     Graph g(xml);                              
 
 //     std::vector<int> suggestion = suggest(g,7);
-//     printsuggestions(suggestion);
+//     printSuggestions(suggestion);
 //     return 0;
 // }
 
