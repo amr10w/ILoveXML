@@ -379,7 +379,8 @@ int CLICommands::mostActiveCommand(const std::vector<std::string> &args)
     
     Graph graph(content);
     int mostActivePersonId = graph.getMostActivePersonId();
-    std::cout << mostActivePersonId << std::endl;
+    std::string mostActivePersonName = graph.getName(mostActivePersonId);
+    std::cout << mostActivePersonId << ": " << mostActivePersonName << std::endl;
     return OK;
 }
 
@@ -403,6 +404,7 @@ int CLICommands::mostInfluencerCommand(const std::vector<std::string> &args)
     
     Graph graph(content);
     int mostInfluencerPersonId = graph.getMostInfluencerId();
-    std::cout << mostInfluencerPersonId << std::endl;
+    std::string mostInfluencerPersonName = graph.getName(mostInfluencerPersonId);
+    std::cout << mostInfluencerPersonId << ": " << mostInfluencerPersonName << std::endl;
     return OK;
 }
