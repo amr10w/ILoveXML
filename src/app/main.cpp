@@ -2,6 +2,7 @@
 #include "VerificationPage.h"
 #include "minifyingPage.h" 
 #include "postsearch.h" 
+#include "social_relations_page.h"
 #include "CLICommands.h"
 #include <QApplication>
 
@@ -40,9 +41,12 @@ int main(int argc, char *argv[])
         // Renamed to 'm' to avoid conflict with MainWindow 'w'
         // MinifyingPage m;
         // m.show();
-       PostSearch P;
-         P.show();
 
+        // PostSearch P;
+        // P.show();
+
+        // SocialRelationsPage s;
+        // s.show();
         return a.exec();
     }
 }
