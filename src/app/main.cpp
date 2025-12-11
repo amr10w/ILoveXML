@@ -5,6 +5,7 @@
 #include "social_relations_page.h"
 #include "CLICommands.h"
 #include <QApplication>
+#include <graphPage.h>
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,8 @@ int main(int argc, char *argv[])
         // Renamed to 'm' to avoid conflict with MainWindow 'w'
         // MinifyingPage m;
         // m.show();
+        // GraphPage G;
+        // G.show();
 
         // PostSearch P;
         // P.show();

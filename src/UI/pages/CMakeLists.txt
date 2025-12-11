@@ -31,6 +31,9 @@ add_library(UI_Pages STATIC
     social_relations_page.cpp
     social_relations_page.h
     social_relations_page.ui
+    graphpage.cpp
+    graphpage.h
+    graphpage.ui
 )
 
 
