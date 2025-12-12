@@ -35,7 +35,9 @@ private:
     QString outputXML;
     QString currentFilePath;
     qint64 originalSize;
-    qint64 compressedSize; 
+    qint64 compressedSize;
+
+    QByteArray outputComp;
 
     void updateStatistics();
     void updateOutputVisibility();

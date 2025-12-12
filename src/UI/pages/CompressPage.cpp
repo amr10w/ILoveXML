@@ -9,9 +9,7 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QScrollBar>
-
-// Helper macro to wrap the newly declared backend function
-extern std::string compressXMLString(const std::string& xmlContent);
+#include "../../core/BPE_Bridge.h"
 
 
 CompressPage::CompressPage(QWidget *parent)
@@ -99,16 +97,14 @@ void CompressPage::onCompressXML()
         // Convert QString to std::string for the utility function
         std::string xmlContentStd = inputXML.toStdString();
         
-        std::string compressedXmlStd = compressXMLString(xmlContentStd); 
-        
         // Convert the result back to QString
-        outputXML = QString::fromStdString(compressedXmlStd);
+        outputComp = compressXMLString(xmlContentStd);
         
         // Calculate compressed size
-        compressedSize = outputXML.toUtf8().size(); 
+        compressedSize = outputComp.size(); 
         
         // Display in output text edit
-        ui->outputTextEdit->setPlainText(outputXML);
+        // ui->outputTextEdit->setPlainText(outputXML);
         
         // Update statistics
         updateStatistics();
@@ -148,17 +144,17 @@ void CompressPage::updateStatistics()
 
 void CompressPage::updateOutputVisibility()
 {
-    bool hasOutput = !outputXML.isEmpty();
+    bool hasOutput = !outputComp.isEmpty();
     // FIX 2: Ensure we consistently use statsContainer, not statsWidget
     ui->statsContainer->setVisible(hasOutput); 
     ui->outputLabel->setVisible(hasOutput);
-    ui->outputTextEdit->setVisible(hasOutput);
+    // ui->outputTextEdit->setVisible(hasOutput);
     ui->downloadButton->setVisible(hasOutput);
 }
 
 void CompressPage::onDownload()
 {
-    if (outputXML.isEmpty()) {
+    if (outputComp.isEmpty()) {
         QMessageBox::warning(this, "Warning", "No compressed XML to download!");
         return;
     }
@@ -183,14 +179,12 @@ void CompressPage::onDownload()
         return;
     
     QFile outFile(saveFileName);
-    if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!outFile.open(QIODevice::WriteOnly)) {
         QMessageBox::critical(this, "Error", "Cannot save file!");
         return;
     }
     
-    QTextStream out(&outFile);
-    out << outputXML;
-    outFile.close();
+    outFile.write(outputComp);
 }
 
 void CompressPage::showMessage(const QString& message, bool isError)
