@@ -4,6 +4,8 @@
 #include "postsearch.h" 
 #include "social_relations_page.h"
 #include "CLICommands.h"
+#include "influence_activity.h"
+
 #include <QApplication>
 #include <graphPage.h>
 
@@ -50,6 +52,8 @@ int main(int argc, char *argv[])
 
         // SocialRelationsPage s;
         // s.show();
+        InfluenceAndActivity IA;
+        IA.show();
         return a.exec();
     }
 }
