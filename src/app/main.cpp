@@ -3,8 +3,13 @@
 #include "CompressPage.h"
 #include "DecompressPage.h"
 #include "minifyingPage.h" 
+#include "postsearch.h" 
+#include "social_relations_page.h"
 #include "CLICommands.h"
+#include "influence_activity.h"
+
 #include <QApplication>
+#include <graphPage.h>
 
 int main(int argc, char *argv[])
 {
@@ -29,25 +34,9 @@ int main(int argc, char *argv[])
 
         a.setStyleSheet("QMessageBox { background-color: #2b2b2b; } QLabel { color: white; }");
         
-        // 1. Create and show the Main Window (From 'main')
+        // Create and show the Main Window ONLY
         MainWindow w;
         w.show();
-
-        // 2. Create and show the Verification Window (From 'main')
-        VerificationPage v;
-        v.show();
-
-        // 3. Create and show the Minifying Page (From 'formatting-page')
-        // Renamed to 'm' to avoid conflict with MainWindow 'w'
-        MinifyingPage m;
-        m.show();
-
-        CompressPage c;
-        c.show();
-
-        DecompressPage d;
-        d.show();
-
         return a.exec();
     }
 }

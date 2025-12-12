@@ -12,6 +12,7 @@ WelcomePage::WelcomePage(QWidget *parent) :
     Q_INIT_RESOURCE(resources);
 
     ui->setupUi(this);
+    setWindowTitle("Welcome to XNet");
 }
 
 WelcomePage::~WelcomePage()
@@ -27,4 +28,9 @@ void WelcomePage::on_btnStart_clicked()
 void WelcomePage::on_btnAbout_clicked()
 {
     emit aboutClicked();
+}
+
+void WelcomePage::on_btnTeam_clicked()
+{
+    emit teamPageClicked();
 }
