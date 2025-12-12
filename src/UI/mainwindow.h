@@ -15,6 +15,7 @@
 #include "graphPage.h"
 #include "formattingPage.h"
 #include "json_converter_page.h"
+#include "CompressPage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,6 +51,7 @@ private slots:
     void onGoToFormatting();
     void onGoToJSON();
     void onGoToPostSearch();
+    void onGoToCompress();
     // ... add others as needed
 
 private:
@@ -67,6 +69,7 @@ private:
     GraphPage *m_graphPage;
     FormattingPage *m_formattingPage;
     JsonConverterPage *m_jsonPage;
+    CompressPage *m_compressPage;
 };
 
 #endif // MAINWINDOW_H

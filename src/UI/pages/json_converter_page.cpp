@@ -15,7 +15,7 @@ JsonConverterPage::JsonConverterPage(QWidget *parent)
     , ui(new Ui::JsonConverterPage)
 {
     ui->setupUi(this);
-    setFixedSize(900, 750);
+    // setFixedSize(900, 750);
 
     // Initially hide output section
     ui->outputLabel->setVisible(false);

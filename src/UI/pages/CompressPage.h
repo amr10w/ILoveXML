@@ -26,6 +26,9 @@ private slots:
     void onCompressXML(); 
     void onDownload();
 
+signals:
+    void backToHomeClicked();
+
 private:
     Ui::CompressPage *ui;
     QString inputXML;

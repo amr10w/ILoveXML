@@ -17,7 +17,7 @@ public:
     
 signals:
     void verificationClicked();
-    void formattingClicked();
+    // void formattingClicked(); // Removed
     void minifyClicked();
     void prettifyClicked();
     void convertToJsonClicked();
@@ -30,7 +30,7 @@ signals:
 
 private slots:
     void on_btnVerification_clicked();
-    void on_btnFormatting_clicked();
+    // void on_btnFormatting_clicked(); // Removed
     void on_btnMinify_clicked();
     void on_btnPrettify_clicked();
     void on_btnConvertJson_clicked();

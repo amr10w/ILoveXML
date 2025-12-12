@@ -417,14 +417,20 @@ QPushButton#downloadButton:pressed {
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="inputTextEdit">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>200</height>
-             </size>
-            </property>
-           </widget>
+            <widget class="QTextEdit" name="inputTextEdit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>200</height>
+              </size>
+             </property>
+            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="generateButton">
@@ -451,6 +457,12 @@ QPushButton#downloadButton:pressed {
           </item>
           <item>
            <widget class="QScrollArea" name="graphScrollArea">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>

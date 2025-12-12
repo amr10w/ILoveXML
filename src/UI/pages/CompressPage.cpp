@@ -21,7 +21,7 @@ CompressPage::CompressPage(QWidget *parent)
     , compressedSize(0) 
 {
     ui->setupUi(this);
-    setFixedSize(900, 750);
+    // setFixedSize(900, 750);
     
     // Initial UI Setup 
     if (ui->statsContainer) ui->statsContainer->setVisible(false);
@@ -47,7 +47,8 @@ CompressPage::~CompressPage()
 
 void CompressPage::onBackToOperations()
 {
-    this->close();
+    // this->close();
+    emit backToHomeClicked();
 }
 
 void CompressPage::onBrowseFile()

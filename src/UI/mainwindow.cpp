@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_graphPage = new GraphPage(this);
     m_formattingPage = new FormattingPage(this);
     m_jsonPage = new JsonConverterPage(this);
+    m_compressPage = new CompressPage(this);
 
     // --- 2. Add them to the stacked widget ---
     // The order here defines the index (0, 1, 2, 3...)
@@ -35,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(m_graphPage);        // Index 7
     ui->stackedWidget->addWidget(m_formattingPage);   // Index 8
     ui->stackedWidget->addWidget(m_jsonPage);         // Index 9
+    ui->stackedWidget->addWidget(m_compressPage);     // Index 10
 
     // --- 3. Connect Welcome Page Signals ---
     connect(m_welcomePage, &WelcomePage::startProcessingClicked, this, &MainWindow::onStartProcessingClicked);
@@ -50,16 +52,15 @@ MainWindow::MainWindow(QWidget *parent)
     // connect(m_verificationPage, &VerificationPage::backClicked, this, &MainWindow::onBackToWelcomeClicked);
 
     connect(m_processingPage, &ProcessingPage::verificationClicked, this, &MainWindow::onGoToVerification);
-    connect(m_processingPage, &ProcessingPage::formattingClicked, this, &MainWindow::onGoToFormatting); // Use FormattingPage slot
+    // Formatting button removed, Prettify handles this now
     connect(m_processingPage, &ProcessingPage::minifyClicked, this, &MainWindow::onGoToMinifying);
-    connect(m_processingPage, &ProcessingPage::prettifyClicked, this, &MainWindow::onGoToFormatting); // Assuming Prettify goes to same page
-    connect(m_processingPage, &ProcessingPage::convertToJsonClicked, this, &MainWindow::onGoToJSON); 
+    connect(m_processingPage, &ProcessingPage::prettifyClicked, this, &MainWindow::onGoToFormatting); // Prettify uses FormattingPage
+    connect(m_processingPage, &ProcessingPage::convertToJsonClicked, this, &MainWindow::onGoToJSON);  
     connect(m_processingPage, &ProcessingPage::graphClicked, this, &MainWindow::onGoToGraph);
     connect(m_processingPage, &ProcessingPage::socialClicked, this, &MainWindow::onGoToSocial);
     connect(m_processingPage, &ProcessingPage::postSearchClicked, this, &MainWindow::onGoToPostSearch);
+    connect(m_processingPage, &ProcessingPage::compressClicked, this, &MainWindow::onGoToCompress);
 
-    // --- Connect Tool Pages BACK to Welcome (or ProcessingPage) ---
-    // Using Welcome as per current pattern, but could be ProcessingPage if desired
     // --- Connect Tool Pages BACK to Welcome (or ProcessingPage) ---
     // Using Welcome as per current pattern, but could be ProcessingPage if desired
     connect(m_verificationPage, &VerificationPage::backClicked, this, &MainWindow::onBackToProcessingClicked);
@@ -70,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_socialPage, &SocialRelationsPage::backClicked, this, &MainWindow::onBackToProcessingClicked);
     // PostSearch needs back signal too
     connect(m_postSearchPage, &PostSearch::backClicked, this, &MainWindow::onBackToProcessingClicked); // Need to add signal to PostSearch
+    connect(m_compressPage, &CompressPage::backToHomeClicked, this, &MainWindow::onBackToProcessingClicked);
 
     // Start at Welcome Page
     ui->stackedWidget->setCurrentIndex(0);
@@ -91,6 +93,10 @@ void MainWindow::onStartProcessingClicked()
 void MainWindow::onAboutClicked()
 {
     AboutPage aboutDialog(this);
+    
+    // Connect AboutPage signal to switch to TeamPage
+    connect(&aboutDialog, &AboutPage::teamPageRequested, this, &MainWindow::onTeamPageClicked);
+    
     aboutDialog.exec(); 
 }
 
@@ -144,4 +150,9 @@ void MainWindow::onGoToJSON()
 void MainWindow::onGoToPostSearch()
 {
     ui->stackedWidget->setCurrentWidget(m_postSearchPage);
+}
+
+void MainWindow::onGoToCompress()
+{
+    ui->stackedWidget->setCurrentWidget(m_compressPage);
 }
