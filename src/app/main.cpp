@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
         // CASE 2 — no arguments → launch GUI
         QApplication a(argc, argv);
 
