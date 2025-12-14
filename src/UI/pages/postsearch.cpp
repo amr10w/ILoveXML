@@ -11,14 +11,16 @@
 #include <QInputDialog>
 #include <QTextStream>
 #include <QPixmap>
+// #include <QGraphicsDropShadowEffect> // Start using effects if needed, but styling is mostly QSS
 // #include "../../core/SearchTopic.h" 
 #include "../../core/SearchWord.h" 
 #include "../../core/SearchTopic.h" 
 
 // Theme colors
 #define ORANGE_THEME "#FF6D1F"
-#define BROWSE_BUTTON_COLOR "#FFA239"
-#define LIGHTER_BUTTON_COLOR "#FF6D1F"
+#define LIGHT_ORANGE_BG "#FFF3E0" // Lighter orange for browse button background
+#define PAGE_BG "#F4F7FE" // Light gray/blue-ish background similar to reference
+#define TEXT_COLOR "#2B3674" // Dark blue/gray text color often used with this style
 
 PostSearch::PostSearch(QWidget *parent)
     : QMainWindow(parent)
@@ -27,11 +29,10 @@ PostSearch::PostSearch(QWidget *parent)
     setWindowTitle("Post Search");
 
     // Global styling
-    setStyleSheet(
-        "QWidget { background-color: #f0f0f0; }"
-        "QPushButton { font-weight: bold; border-radius: 10px; padding: 10px; }"
-        
-    );
+    setStyleSheet(QString(
+        "QMainWindow { background-color: %1; }"
+        "QMessageBox { background-color: white; }"
+    ).arg(PAGE_BG));
 
     setupUI();
 
@@ -55,109 +56,165 @@ void PostSearch::setupUI()
     setCentralWidget(centralWidget);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
-    // Removed mainLayout contents margins to use margins on inner containers
-    mainLayout->setContentsMargins(20, 30, 20, 30);
+    // Margins for the main page
+    mainLayout->setContentsMargins(30, 20, 30, 30);
+    mainLayout->setSpacing(20);
 
-    // Header (No change)
-    QWidget *headerWidget = new QWidget();
-    headerWidget->setStyleSheet(
-        "QWidget { background-color: " BROWSE_BUTTON_COLOR "; color: white; padding: 10px; border-radius:10px}"
-        "QLabel { background-color: transparent; }"
-    );
-
-    QVBoxLayout *headerLayout = new QVBoxLayout(headerWidget);
-    QLabel *iconTitle = new QLabel("Post Search");
-    iconTitle->setStyleSheet("font-size: 24px; font-weight: bold;");
-    headerLayout->addWidget(iconTitle);
-
-    QLabel *description = new QLabel("Finding posts related to topics or words");
-    description->setStyleSheet("font-size: 14px;");
-    headerLayout->addWidget(description);
-
-    // Back Button (Added)
-    QPushButton *backBtn = new QPushButton("Back");
-    backBtn->setStyleSheet("background-color: transparent; border: 1px solid white; color: white; padding: 5px; border-radius: 5px;");
-    connect(backBtn, &QPushButton::clicked, this, &PostSearch::on_backButton_clicked);
-    headerLayout->addWidget(backBtn);
+    // 1. Navigation: Back Link (Top-Left)
+    // Move "Back" button out of the main container. It should be a simple text link.
+    QPushButton *backBtn = new QPushButton("← Back to Operations");
+    backBtn->setCursor(Qt::PointingHandCursor);
+    backBtn->setStyleSheet(QString(
+        "QPushButton {"
+        "  background-color: transparent;"
+        "  color: %1;" // Use theme color or a dark text color
+        "  font-size: 14px;"
+        "  border: none;"
+        "  text-align: left;"
+        "  font-weight: 500;"
+        "}"
+        "QPushButton:hover { text-decoration: underline; }"
+    ).arg(TEXT_COLOR));
+    backBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     
+    connect(backBtn, &QPushButton::clicked, this, &PostSearch::on_backButton_clicked);
+    mainLayout->addWidget(backBtn);
+
+    // 2. Header Structure: Contained, rounded header card
+    QWidget *headerWidget = new QWidget();
+    headerWidget->setObjectName("headerWidget");
+    headerWidget->setStyleSheet(QString(
+        "#headerWidget {"
+        "  background-color: %1;" // Orange Theme
+        "  border-radius: 20px;"
+        "}"
+    ).arg(ORANGE_THEME));
+
+    QHBoxLayout *headerLayout = new QHBoxLayout(headerWidget);
+    headerLayout->setContentsMargins(25, 25, 25, 25);
+    headerLayout->setSpacing(20);
+
+    // Icon (Optional - Using a simple text icon or placeholder for now)
+    QLabel *iconLabel = new QLabel("🔎"); // Using text representation of code/xml icon
+    iconLabel->setAlignment(Qt::AlignCenter);
+    iconLabel->setFixedSize(60, 60);
+    iconLabel->setStyleSheet(
+        "background-color: rgba(255, 255, 255, 0.2);" // Semi-transparent white
+        "color: white;"
+        "border-radius: 12px;"
+        "font-size: 24px;"
+        "font-weight: bold;"
+    );
+    headerLayout->addWidget(iconLabel);
+
+    // Title & Description Container
+    QVBoxLayout *headerTextLayout = new QVBoxLayout();
+    headerTextLayout->setSpacing(5);
+
+    QLabel *titleLabel = new QLabel("Post Search");
+    titleLabel->setStyleSheet("color: white; font-size: 24px; font-weight: bold;");
+    headerTextLayout->addWidget(titleLabel);
+
+    QLabel *descLabel = new QLabel("Finding posts related to topics or words");
+    descLabel->setStyleSheet("color: rgba(255, 255, 255, 0.9); font-size: 14px;");
+    headerTextLayout->addWidget(descLabel);
+
+    headerLayout->addLayout(headerTextLayout);
+    headerLayout->addStretch(); // Push content to left
+
     mainLayout->addWidget(headerWidget);
-    mainLayout->addSpacing(10); // Small space before the main content container
 
-    // Input & Action Container (Combined, with white background)
-    QWidget *inputContainer = new QWidget();
-    inputContainer->setStyleSheet(
-        "QWidget { background-color: white; border-radius: 10px; }" // White background applied here
+    // 3. Main Content: White Card
+    QWidget *contentCard = new QWidget();
+    contentCard->setObjectName("contentCard");
+    contentCard->setStyleSheet(
+        "#contentCard {"
+        "  background-color: white;"
+        "  border-radius: 20px;"
+        "}"
     );
 
-    QVBoxLayout *inputLayout = new QVBoxLayout(inputContainer);
-    // Adjusted margins for padding inside the white container
-    inputLayout->setContentsMargins(30, 20, 30, 30);
-    inputLayout->setSpacing(15); // Add spacing between elements
+    QVBoxLayout *cardLayout = new QVBoxLayout(contentCard);
+    cardLayout->setContentsMargins(30, 30, 30, 30);
+    cardLayout->setSpacing(20);
 
-    // --- Input Elements ---
+    // Input Label
+    QLabel *inputLabel = new QLabel("Input XML File");
+    inputLabel->setStyleSheet(QString("font-weight: bold; font-size: 16px; color: %1;").arg(TEXT_COLOR));
+    cardLayout->addWidget(inputLabel);
 
-    QLabel *inputLabel = new QLabel("Input:XML File");
-    inputLabel->setStyleSheet("font-weight: bold; font-size: 16px; margin-bottom: 5px; color:black");
-    inputLayout->addWidget(inputLabel);
+    // Browse Button
+    browseButton = new QPushButton("  Browse XML File"); // Added spaces for loose centering if needed, or rely on layout
+    browseButton->setCursor(Qt::PointingHandCursor);
+    // Use an icon if possible, but text is fine. Reference has an upload icon.
+    // mimicking reference style: light blue bg, blue text. Here: light orange bg, orange text.
+    browseButton->setStyleSheet(QString(
+        "QPushButton {"
+        "  background-color: %1;" // Light Orange
+        "  color: %2;" // Orange Theme
+        "  border: none;"
+        "  border-radius: 10px;"
+        "  font-weight: bold;"
+        "  padding: 15px;"
+        "  font-size: 14px;"
+        "}"
+        "QPushButton:hover { background-color: #FFE0B2; }"
+    ).arg(LIGHT_ORANGE_BG).arg(ORANGE_THEME));
+    cardLayout->addWidget(browseButton);
 
-    browseButton = createStyledButton(
-        "Browse XML File",
-        "QPushButton { "
-        " background-color:#FFECC0 ; "
-        " color: #FF6D1F; "
-        " border: 1px solid #FFECC0 ; "
-        "} "
-        "QPushButton:hover { background-color: #FFCF71 ; }"
-    );
-    browseButton->setMinimumHeight(50);
-    inputLayout->addWidget(browseButton);
-
-    QLabel *orLabel = new QLabel("OR");
-    orLabel->setAlignment(Qt::AlignCenter);
-    orLabel->setStyleSheet(" color:black");
-    inputLayout->addWidget(orLabel);
-
+    // Text Area
     xmlTextEdit = new QTextEdit();
     xmlTextEdit->setPlaceholderText("Paste your XML content here...");
-    xmlTextEdit->setMinimumHeight(190);
+    xmlTextEdit->setMinimumHeight(200);
     xmlTextEdit->setStyleSheet(
-    "QTextEdit {"
-    "   background: #EEEEEE ;" /* Use 'background' instead of 'background-color' */
-    "   color: black;"    
-    "   margin-bottom:10px;"      
-    "   border: 20px solid black;"
-    "   padding: 10px;"
-    "}"
-);
+        "QTextEdit {"
+        "  background-color: #FAFAFA;" // Very light gray
+        "  border: 1px solid #E0E0E0;" // 1px border
+        "  border-radius: 10px;"
+        "  padding: 15px;"
+        "  color: #333;"
+        "  font-size: 14px;"
+        "  font-family: Consolas, monospace;"
+        "}"
+    );
+    cardLayout->addWidget(xmlTextEdit);
 
-    inputLayout->addWidget(xmlTextEdit);
+    cardLayout->addSpacing(10);
 
-    inputLayout->addSpacing(25); // Spacer before action buttons
+    // 4. Buttons (Post Search by Topics / Words)
+    // Style: Match size and shape of primary button in reference.
+    QHBoxLayout *actionsLayout = new QHBoxLayout();
+    actionsLayout->setSpacing(15);
 
-    // --- Action Buttons (Now inside the same white container) ---
+    QString actionButtonStyle = QString(
+        "QPushButton {"
+        "  background-color: %1;" // Orange Theme
+        "  color: white;"
+        "  border: none;"
+        "  border-radius: 12px;" // Matching card radius proportion or reference button
+        "  font-weight: bold;"
+        "  font-size: 15px;"
+        "  padding: 15px;"
+        "}"
+        "QPushButton:hover { background-color: #E65100; }" // Darker orange
+        "QPushButton:pressed { background-color: #BF360C; }"
+    ).arg(ORANGE_THEME);
 
-    QHBoxLayout *actionLayout = new QHBoxLayout(); // Use QHBoxLayout for horizontal buttons
-    actionLayout->setSpacing(10); // Spacing between buttons
+    postsearchByTopics = new QPushButton("Post search by topics");
+    postsearchByTopics->setCursor(Qt::PointingHandCursor);
+    postsearchByTopics->setStyleSheet(actionButtonStyle);
+    
+    postsearchByWords = new QPushButton("Post search by words");
+    postsearchByWords->setCursor(Qt::PointingHandCursor);
+    postsearchByWords->setStyleSheet(actionButtonStyle);
 
-    QString buttonStyle =
-        "QPushButton { background-color: " BROWSE_BUTTON_COLOR "; color: white; font-size: 16px; padding: 15px; } "
-        "QPushButton:hover { background-color: " LIGHTER_BUTTON_COLOR " }";
+    actionsLayout->addWidget(postsearchByTopics);
+    actionsLayout->addWidget(postsearchByWords);
 
-    postsearchByTopics = createStyledButton("Post search by topics", buttonStyle);
-    postsearchByTopics->setMinimumHeight(50);
+    cardLayout->addLayout(actionsLayout);
 
-    postsearchByWords = createStyledButton("Post search by words", buttonStyle);
-    postsearchByWords->setMinimumHeight(50);
-
-    actionLayout->addWidget(postsearchByTopics);
-    actionLayout->addWidget(postsearchByWords);
-
-    inputLayout->addLayout(actionLayout); // Add the horizontal button layout to the vertical input layout
-
-    // Add the single combined container to the main window layout
-    mainLayout->addWidget(inputContainer);
-
-    mainLayout->addStretch(1);
+    mainLayout->addWidget(contentCard);
+    mainLayout->addStretch(); // Fill remaining space
 }
 
 // ----------------- SLOTS -----------------
@@ -172,20 +229,13 @@ void PostSearch::on_searchByTopics_clicked()
     dialog.setLabelText("Enter topics:");
     dialog.setTextEchoMode(QLineEdit::Normal);
     
-    // 3. APPLY STYLING: Set the stylesheet to target the QLineEdit inside the dialog
+    // 3. APPLY STYLING
     dialog.setStyleSheet(
-        "QLineEdit {"
-        "  color: black;"  // <--- SETS THE COLOR OF THE TEXT THE USER TYPES
-        "  font-weight: bold;" // Optional: Make the text bold
-        "}"
-        // Optional: You can style the whole dialog window too
-        "QInputDialog {"
-        "  background-color: #ECECEC;" 
-        "}"
-        "QLabel {"
-        "  color: black;" // Forces the prompt text color to be black
-        "  font-weight: bold;" // Optional: Makes the prompt stand out
-        "}"
+        "QDialog { background-color: white; }"
+        "QLabel { color: #333; font-weight: bold; font-size: 14px; }"
+        "QLineEdit { padding: 8px; border: 1px solid #ccc; border-radius: 5px; color: #333; }"
+        "QPushButton { background-color: " ORANGE_THEME "; color: white; padding: 8px 15px; border-radius: 5px; border: none; font-weight: bold; }"
+        "QPushButton:hover { background-color: #E65100; }"
     );
 
     // 4. Execute the dialog and retrieve the result
@@ -226,64 +276,36 @@ void PostSearch::on_searchByTopics_clicked()
         } else {
             resultText = QString("✅ Found %1 matching posts containing topic: '%2'\n\n--- RESULTS ---\n").arg(results.size()).arg(input);
             
-            // The PostMatchTopic struct (id and text fields) is used here:
             for (size_t i = 0; i < results.size(); ++i) {
-    // 1. Get the ID as std::string
-    std::string postIdStd = results[i].id;
-    
-    // 2. Determine the display string based on the value
-    QString postIdDisplay;
-    if (postIdStd.empty()) {
-        postIdDisplay = "(unknown)";
-    } else {
-        postIdDisplay = QString::fromStdString(postIdStd);
-    }
-    
-    // Formatting each match for display
-    // 3. Append the formatted ID to the result text, using the conditional value
-    resultText += QString("UserID: %1\n")
-        .arg(postIdDisplay);
-    
-    // Show a snippet of the text (e.g., first 100 characters)
-    QString postText = QString::fromStdString(results[i].text).simplified();
-    resultText += QString("Text: %1...\n\n")
-        .arg(postText.left(100)); // Limits output to prevent massive message box
-}
+                std::string postIdStd = results[i].id;
+                
+                QString postIdDisplay;
+                if (postIdStd.empty()) {
+                    postIdDisplay = "(unknown)";
+                } else {
+                    postIdDisplay = QString::fromStdString(postIdStd);
+                }
+                
+                resultText += QString("UserID: %1\n").arg(postIdDisplay);
+                
+                QString postText = QString::fromStdString(results[i].text).simplified();
+                resultText += QString("Text: %1...\n\n").arg(postText.left(100)); // Limits output
+            }
         }
 
-        // 5. Display the Results in a new window (QMessageBox)
+        // 5. Display the Results
         QMessageBox msgBox(this);
         msgBox.setWindowTitle("🔍 Search Results - Topics");
         msgBox.setText(resultText);
-        // Allows the user to select and copy the results
         msgBox.setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard); 
         msgBox.setMinimumWidth(500);
 
-        // Styling (Using your defined styles)
+        // Styling
          msgBox.setStyleSheet(
-            // Style the entire dialog window/container
-            "QMessageBox {"
-            // "  background-color: #f7f7f7; " // Light gray background
-            "  font-family: Arial; "
-            "text-align: center;"
-            "}"
-            // Style the label containing the actual message text
-            "QLabel {"
-            "  color: #333333; " // Dark text color
-            "  font-size: 14px; "
-            "  padding: 10px; "
-            "}"
-            // Style the standard buttons (like OK)
-            "QPushButton {"
-            "  background-color: #FF6D1F; " // Orange theme color
-            "  color: white; "
-            "  border: 1px solid #FF6D1F; "
-            "  border-radius: 5px; "
-            "  padding: 10px 10px; "
-            "}"
-            "QPushButton:hover {"
-            "  background-color: #FF8844; " // Lighter orange on hover
-            "}"
+            "QMessageBox { background-color: white; }"
+            "QLabel { color: #333; font-size: 14px; padding: 10px; }"
+            "QPushButton { background-color: " ORANGE_THEME "; color: white; border-radius: 5px; padding: 8px 15px; border: none; font-weight: bold; }"
+            "QPushButton:hover { background-color: #E65100; }"
         );
         msgBox.exec();
     } catch (const std::exception& e) {
@@ -300,25 +322,17 @@ void PostSearch::on_searchByWords_clicked()
     // 1. Get user input (Word)
    QInputDialog dialog(this);
 
-    // 2. Set the window title and label text (matching the original call)
     dialog.setWindowTitle("Search by Words");
     dialog.setLabelText("Enter specific word:");
     dialog.setTextEchoMode(QLineEdit::Normal);
     
-    // 3. APPLY STYLING: Set the stylesheet to target the QLineEdit inside the dialog
+    // 3. APPLY STYLING
     dialog.setStyleSheet(
-        "QLineEdit {"
-        "  color: black;"  // <--- SETS THE COLOR OF THE TEXT THE USER TYPES
-        "  font-weight: bold;" // Optional: Make the text bold
-        "}"
-        // Optional: You can style the whole dialog window too
-        "QInputDialog {"
-        "  background-color: #ECECEC;" 
-        "}"
-        "QLabel {"
-        "  color: black;" // Forces the prompt text color to be black
-        "  font-weight: bold;" // Optional: Makes the prompt stand out
-        "}"
+        "QDialog { background-color: white; }"
+        "QLabel { color: #333; font-weight: bold; font-size: 14px; }"
+        "QLineEdit { padding: 8px; border: 1px solid #ccc; border-radius: 5px; color: #333; }"
+        "QPushButton { background-color: " ORANGE_THEME "; color: white; padding: 8px 15px; border-radius: 5px; border: none; font-weight: bold; }"
+        "QPushButton:hover { background-color: #E65100; }"
     );
 
     // 4. Execute the dialog and retrieve the result
@@ -344,83 +358,50 @@ void PostSearch::on_searchByWords_clicked()
         return;
     }
 
-    // Convert QString to std::string for the core C++ function
     std::string xmlContentStd = xmlContentQt.toStdString();
     std::string wordStd = input.toStdString();
 
     // --- Core Search Logic ---
     try {
-        // 3. Call the external function from SearchWord.h
-        // Signature: std::vector<PostMatch> searchPostsByWord(const std::string& xmlContent, const std::string& word);
-             std::vector<PostMatch> results = searchPostsByWord(xmlContentStd,wordStd);
+        std::vector<PostMatch> results = searchPostsByWord(xmlContentStd,wordStd);
 
-        // 4. Format the Results for Display
+        // 4. Format the Results
         QString resultText;
         if (results.empty()) {
             resultText = QString("No posts found containing the word: '%1'.").arg(input);
         } else {
             resultText = QString("✅ Found %1 matching posts containing word: '%2'\n\n--- RESULTS ---\n").arg(results.size()).arg(input);
             
-            // The PostMatch struct you provided has id and text fields:
-            // struct PostMatch { std::string id; std::string text; };
             for (size_t i = 0; i < results.size(); ++i) {
-             // Formatting each match for display
-    
-            // 1. Get the ID as std::string
-            std::string postIdStd = results[i].id;
-            
-            // 2. Determine the display string based on the value
-            QString postIdDisplay;
-            if (postIdStd.empty()) {
-                postIdDisplay = "(unknown)";
-            } else {
-                postIdDisplay = QString::fromStdString(postIdStd);
-            }
-            
-            // 3. Append the formatted ID to the result text, using the conditional value
-            resultText += QString("UserID: %1\n")
-                .arg(postIdDisplay);
-            
-            // Show a snippet of the text (e.g., first 100 characters)
-            QString postText = QString::fromStdString(results[i].text).simplified();
-            resultText += QString("Text: %1...\n\n")
-                .arg(postText.left(100)); // Limits output to prevent massive message box
-        }
+                std::string postIdStd = results[i].id;
+                
+                QString postIdDisplay;
+                if (postIdStd.empty()) {
+                    postIdDisplay = "(unknown)";
+                } else {
+                    postIdDisplay = QString::fromStdString(postIdStd);
                 }
+                
+                resultText += QString("UserID: %1\n").arg(postIdDisplay);
+                
+                QString postText = QString::fromStdString(results[i].text).simplified();
+                resultText += QString("Text: %1...\n\n").arg(postText.left(100)); // Limits output
+            }
+        }
 
-        // 5. Display the Results in a new window (QMessageBox)
+        // 5. Display the Results
         QMessageBox msgBox(this);
         msgBox.setWindowTitle("🔍 Search Results - Words");
         msgBox.setText(resultText);
-        // Allows the user to select and copy the results
         msgBox.setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard); 
         msgBox.setMinimumWidth(500);
 
 
         msgBox.setStyleSheet(
-            // Style the entire dialog window/container
-            "QMessageBox {"
-            // "  background-color: #f7f7f7; " // Light gray background
-            "  font-family: Arial; "
-            "text-align: center;"
-            "}"
-            // Style the label containing the actual message text
-            "QLabel {"
-            "  color: #333333; " // Dark text color
-            "  font-size: 14px; "
-            "  padding: 10px; "
-            "}"
-            // Style the standard buttons (like OK)
-            "QPushButton {"
-            "  background-color: #FF6D1F; " // Orange theme color
-            "  color: white; "
-            "  border: 1px solid #FF6D1F; "
-            "  border-radius: 5px; "
-            "  padding: 10px 10px; "
-            "}"
-            "QPushButton:hover {"
-            "  background-color: #FF8844; " // Lighter orange on hover
-            "}"
+            "QMessageBox { background-color: white; }"
+            "QLabel { color: #333; font-size: 14px; padding: 10px; }"
+            "QPushButton { background-color: " ORANGE_THEME "; color: white; border-radius: 5px; padding: 8px 15px; border: none; font-weight: bold; }"
+            "QPushButton:hover { background-color: #E65100; }"
         );
         msgBox.exec();
 
@@ -430,10 +411,6 @@ void PostSearch::on_searchByWords_clicked()
         QMessageBox::critical(this, "🚨 Search Error", "An unknown error occurred during search execution.");
     }
 }
-
-
-
-
 
 void PostSearch::on_browseButton_clicked()
 {
@@ -446,7 +423,6 @@ void PostSearch::on_browseButton_clicked()
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QTextStream in(&file);
             xmlTextEdit->setText(in.readAll());
-            // QMessageBox::information(this, "File Loaded", "Loaded: " + fileName);
         }
     }
 }

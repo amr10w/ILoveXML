@@ -27,6 +27,7 @@ add_subdirectory(src/core)
 add_subdirectory(src/UI/pages)
 
 qt_add_executable(XNet
+    WIN32
     
 )
 

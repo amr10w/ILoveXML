@@ -21,7 +21,7 @@ DecompressPage::DecompressPage(QWidget *parent)
     , decompressedSize(0) 
 {
     ui->setupUi(this);
-    setFixedSize(900, 750);
+    // setFixedSize(900, 750);
     
     // Initial UI Setup 
     updateOutputVisibility(false);
