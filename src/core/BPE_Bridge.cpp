@@ -30,7 +30,7 @@ std::string bpe_decompress_in_memory(const QByteArray& compressedBytes)
 // extern std::string compressXMLString(const std::string& xmlContent);
 // We implement it here by performing compression and then writing the result to memory.
 
-QByteArray compressXMLString(const std::string& xmlContent)
+QByteArray bpe_compress_bridge(const std::string& xmlContent)
 {
     BPE compressor;
     

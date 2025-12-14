@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_formattingPage = new FormattingPage(this);
     m_jsonPage = new JsonConverterPage(this);
     m_compressPage = new CompressPage(this);
+    m_decompressPage = new DecompressPage(this);
     m_influencePage = new InfluenceAndActivity(this);
 
     // --- 2. Add them to the stacked widget ---
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(m_formattingPage);   // Index 8
     ui->stackedWidget->addWidget(m_jsonPage);         // Index 9
     ui->stackedWidget->addWidget(m_compressPage);     // Index 10
+    ui->stackedWidget->addWidget(m_decompressPage);   // Index 12
     ui->stackedWidget->addWidget(m_influencePage);    // Index 11
 
     // --- 3. Connect Welcome Page Signals ---
@@ -62,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_processingPage, &ProcessingPage::socialClicked, this, &MainWindow::onGoToSocial);
     connect(m_processingPage, &ProcessingPage::postSearchClicked, this, &MainWindow::onGoToPostSearch);
     connect(m_processingPage, &ProcessingPage::compressClicked, this, &MainWindow::onGoToCompress);
+    connect(m_processingPage, &ProcessingPage::decompressClicked, this, &MainWindow::onGoToDecompress);
     connect(m_processingPage, &ProcessingPage::influenceClicked, this, &MainWindow::onGoToInfluence);
 
     // --- Connect Tool Pages BACK to Welcome (or ProcessingPage) ---
@@ -75,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
     // PostSearch needs back signal too
     connect(m_postSearchPage, &PostSearch::backClicked, this, &MainWindow::onBackToProcessingClicked); // Need to add signal to PostSearch
     connect(m_compressPage, &CompressPage::backToHomeClicked, this, &MainWindow::onBackToProcessingClicked);
+    connect(m_decompressPage, &DecompressPage::backToProcessingClicked, this, &MainWindow::onBackToProcessingClicked);
     connect(m_influencePage, &InfluenceAndActivity::backToHomeClicked, this, &MainWindow::onBackToProcessingClicked);
 
     // Start at Welcome Page
@@ -164,5 +168,10 @@ void MainWindow::onGoToCompress()
 void MainWindow::onGoToInfluence()
 {
     ui->stackedWidget->setCurrentWidget(m_influencePage);
+}
+
+void MainWindow::onGoToDecompress()
+{
+    ui->stackedWidget->setCurrentWidget(m_decompressPage);
 }
 

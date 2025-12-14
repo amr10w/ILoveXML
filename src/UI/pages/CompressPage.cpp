@@ -98,7 +98,7 @@ void CompressPage::onCompressXML()
         std::string xmlContentStd = inputXML.toStdString();
         
         // Convert the result back to QString
-        outputComp = compressXMLString(xmlContentStd);
+        outputComp = bpe_compress_bridge(xmlContentStd);
         
         // Calculate compressed size
         compressedSize = outputComp.size(); 

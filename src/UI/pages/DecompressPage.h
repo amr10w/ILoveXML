@@ -17,6 +17,9 @@ public:
     explicit DecompressPage(QWidget *parent = nullptr);
     ~DecompressPage();
 
+signals:
+    void backToProcessingClicked();
+
 private slots:
     void onBackToOperations();
     void onBrowseFile();

@@ -11,7 +11,7 @@
 // Utility function we assume exists, wrapping the BPE::load_from_file and BPE::decompress
 // We pass the raw compressed bytes (including the dictionary header) and get the XML text.
 // NOTE: You must implement this bridge function in a utility file that links BPE.h/cpp.
-extern std::string decompressxmlBytes(const QByteArray& compressedBytes); 
+extern std::string bpe_decompress_in_memory(const QByteArray& compressedBytes); 
 
 
 DecompressPage::DecompressPage(QWidget *parent)
@@ -46,7 +46,7 @@ DecompressPage::~DecompressPage()
 
 void DecompressPage::onBackToOperations()
 {
-    emit close(); // Use close() or a custom signal to navigate back
+    emit backToProcessingClicked();
 }
 
 void DecompressPage::onBrowseFile()

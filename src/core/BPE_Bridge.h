@@ -7,7 +7,7 @@
 #include <QByteArray>
 
 // Compression utility (used by CompressPage.cpp)
-QByteArray compressXMLString(const std::string& xmlContent);
+QByteArray bpe_compress_bridge(const std::string& xmlContent);
 
 // Decompression utility (used by DecompressPage.cpp)
 std::string bpe_decompress_in_memory(const QByteArray& compressedBytes);

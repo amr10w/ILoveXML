@@ -16,6 +16,7 @@
 #include "formattingPage.h"
 #include "json_converter_page.h"
 #include "CompressPage.h"
+#include "DecompressPage.h"
 #include "influence_activity.h"
 
 QT_BEGIN_NAMESPACE
@@ -54,6 +55,7 @@ private slots:
     void onGoToPostSearch();
     void onGoToCompress();
     void onGoToInfluence();
+    void onGoToDecompress();
     // ... add others as needed
 
 private:
@@ -72,6 +74,7 @@ private:
     FormattingPage *m_formattingPage;
     JsonConverterPage *m_jsonPage;
     CompressPage *m_compressPage;
+    DecompressPage *m_decompressPage;
     InfluenceAndActivity *m_influencePage;
 };
 

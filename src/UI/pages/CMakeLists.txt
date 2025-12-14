@@ -29,6 +29,9 @@ add_library(UI_Pages STATIC
     CompressPage.cpp
     CompressPage.h
     CompressPage.ui
+    DecompressPage.cpp
+    DecompressPage.h
+    DecompressPage.ui
     postsearch.cpp
     postsearch.h
     social_relations_page.cpp
