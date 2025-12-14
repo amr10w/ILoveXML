@@ -9,12 +9,13 @@
 #include "../../core/XMLMinifier.h" // Include for minifyXML function
 
 MinifyingPage::MinifyingPage(QWidget *parent)
-    : QScrollArea(parent)
+    : QWidget(parent)
     , ui(new Ui::MinifyingPage)
     , originalSize(0)
     , minifiedSize(0)
 {
     ui->setupUi(this);
+    // topBar logic removed in UI refactor
     
     // Initially hide output section and stats
     ui->statsWidget->setVisible(false);

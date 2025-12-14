@@ -13,6 +13,89 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPushButton>
+#include <QGraphicsDropShadowEffect>
+#include <QPropertyAnimation>
+#include <QEvent>
+
+// Helper class for the hoverable card
+class TeamCard : public QWidget {
+public:
+    TeamCard(QWidget* parent = nullptr) : QWidget(parent) {
+        // Initial Style
+        setStyleSheet(
+            "QWidget { "
+            "  background-color: white; "
+            "  border-radius: 20px; "
+            "  border: 1px solid #EFEFEF; "
+            "}"
+        );
+        
+        // Shadow Effect
+        shadow = new QGraphicsDropShadowEffect(this);
+        shadow->setBlurRadius(20);
+        shadow->setOffset(0, 4);
+        shadow->setColor(QColor(0, 0, 0, 15)); // Soft initial shadow
+        setGraphicsEffect(shadow);
+    }
+
+protected:
+    void enterEvent(QEnterEvent* event) override {
+        // Enlarge shadow and move up slightly
+        QPropertyAnimation* anim = new QPropertyAnimation(shadow, "blurRadius");
+        anim->setDuration(200);
+        anim->setStartValue(shadow->blurRadius());
+        anim->setEndValue(40);
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+
+        QPropertyAnimation* animOffset = new QPropertyAnimation(shadow, "offset");
+        animOffset->setDuration(200);
+        animOffset->setStartValue(shadow->offset());
+        animOffset->setEndValue(QPointF(0, 8));
+        animOffset->start(QAbstractAnimation::DeleteWhenStopped);
+
+        // Ideally we would animate geometry/pos here for translateY, 
+        // but simple shadow pop is safer for grid layout constraints.
+        // We can mimic highlighting:
+        setStyleSheet(
+            "QWidget { "
+            "  background-color: white; "
+            "  border-radius: 20px; "
+            "  border: 1px solid #4318FF; " // Highlight border on hover
+            "}"
+        );
+        
+        QWidget::enterEvent(event);
+    }
+
+    void leaveEvent(QEvent* event) override {
+        // Restore shadow
+        QPropertyAnimation* anim = new QPropertyAnimation(shadow, "blurRadius");
+        anim->setDuration(200);
+        anim->setStartValue(shadow->blurRadius());
+        anim->setEndValue(20);
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+
+        QPropertyAnimation* animOffset = new QPropertyAnimation(shadow, "offset");
+        animOffset->setDuration(200);
+        animOffset->setStartValue(shadow->offset());
+        animOffset->setEndValue(QPointF(0, 4));
+        animOffset->start(QAbstractAnimation::DeleteWhenStopped);
+
+        setStyleSheet(
+            "QWidget { "
+            "  background-color: white; "
+            "  border-radius: 20px; "
+            "  border: 1px solid #EFEFEF; "
+            "}"
+        );
+
+        QWidget::leaveEvent(event);
+    }
+
+private:
+    QGraphicsDropShadowEffect* shadow;
+};
+
 
 TeamPage::TeamPage(QWidget *parent) :
     QWidget(parent),
@@ -22,41 +105,32 @@ TeamPage::TeamPage(QWidget *parent) :
 {
     ui->setupUi(this);
     
-    // Get back button from UI and connect it
-    backButton = ui->backButton;
-    if (backButton) {
-        connect(backButton, &QPushButton::clicked, this, &TeamPage::on_btnBack_clicked);
-    }
+    // Connect signals
+    connect(ui->backButton, &QPushButton::clicked, this, &TeamPage::on_btnBack_clicked);
     
-    // Connect back button signal
-    connect(backButton, &QPushButton::clicked, this, &TeamPage::on_btnBack_clicked);
-    
-    // Create scroll area for team members
+    // Setup Grid
     scrollArea = findChild<QScrollArea*>("scrollArea");
     if (scrollArea) {
-        // Create outer container with margins
+        // Clean container
         QWidget *outerContainer = new QWidget();
+        // outerContainer->setStyleSheet("background: transparent;");
         QVBoxLayout *outerLayout = new QVBoxLayout(outerContainer);
-        outerLayout->setContentsMargins(0, 20, 0, 20);
+        outerLayout->setContentsMargins(0, 10, 0, 20);
         
-        // Create centered container widget
+        // Grid Container
         containerWidget = new QWidget();
-        containerWidget->setStyleSheet("background-color: white; border-radius: 10px; padding: 15px;");
-        // containerWidget->setMaximumWidth(900);
+        containerWidget->setStyleSheet("background: transparent;");
         
         gridLayout = new QGridLayout(containerWidget);
-        gridLayout->setSpacing(15);
+        gridLayout->setSpacing(30); // More spacing for breathing room
         gridLayout->setContentsMargins(10, 10, 10, 10);
         
-        // Add container to outer layout with stretch
-        outerLayout->addStretch();
-        outerLayout->addWidget(containerWidget, 0, Qt::AlignCenter);
-        outerLayout->addStretch();
+        // Centering logic
+        outerLayout->addWidget(containerWidget, 0, Qt::AlignTop | Qt::AlignHCenter); 
         
         scrollArea->setWidget(outerContainer);
     }
     
-    // Load team members from file
     loadTeamFromFile("./data/team_members.txt");
 }
 
@@ -71,99 +145,123 @@ void TeamPage::addTeamMember(const TeamMember &member)
     
     teamMembers.append(member);
     
-    // Create container for team member card
-    QWidget *memberCard = new QWidget();
-    QVBoxLayout *cardLayout = new QVBoxLayout(memberCard);
-    cardLayout->setContentsMargins(5, 5, 5, 5);
-    cardLayout->setSpacing(2);
+    // Create custom hoverable card
+    TeamCard *memberCard = new TeamCard();
+    memberCard->setFixedSize(260, 320); // Fixed size for consistent nice cards
     
-    // Member image in circular frame
+    QVBoxLayout *cardLayout = new QVBoxLayout(memberCard);
+    cardLayout->setContentsMargins(20, 30, 20, 30);
+    cardLayout->setSpacing(10);
+    
+    // --- 1. Avatar (Circular) ---
     QLabel *imageLabel = new QLabel();
     QPixmap pixmap(member.imagePath);
     
+    // Create a circular avatar base
+    int avatarSize = 110;
+    QPixmap circularPixmap(avatarSize, avatarSize);
+    circularPixmap.fill(Qt::transparent);
+    
+    QPainter painter(&circularPixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    
+    // Draw background circle (accent color for specific roles or just generic cool gradient?)
+    // Let's use a subtle gradient border ring
+    QLinearGradient borderGrad(0, 0, avatarSize, avatarSize);
+    borderGrad.setColorAt(0, QColor("#4318FF")); // Indigo
+    borderGrad.setColorAt(1, QColor("#00D1FF")); // Cyan
+    QPen borderPen(borderGrad, 4);
+    painter.setPen(borderPen);
+    painter.setBrush(Qt::white);
+    painter.drawEllipse(2, 2, avatarSize-4, avatarSize-4);
+
+    // Draw the actual image clipped
+    QPainterPath path;
+    path.addEllipse(5, 5, avatarSize-10, avatarSize-10);
+    painter.setClipPath(path);
+    
     if (!pixmap.isNull()) {
-        // Scale and create circular pixmap
-        pixmap = pixmap.scaledToWidth(100, Qt::SmoothTransformation);
-        QPixmap circularPixmap(100, 100);
-        circularPixmap.fill(Qt::white);
-        
-        QPainter painter(&circularPixmap);
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setBrush(Qt::white);
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(0, 0, 99, 99);
-        
-        // Create a circular mask
-        QPainterPath path;
-        path.addEllipse(0, 0, 100, 100);
-        painter.setClipPath(path);
-        painter.drawPixmap(0, 0, pixmap);
-        painter.end();
-        
-        imageLabel->setPixmap(circularPixmap);
+        pixmap = pixmap.scaled(avatarSize, avatarSize, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        painter.drawPixmap(5, 5, pixmap);
     } else {
-        // Create circular placeholder with user icon style
-        QPixmap circlePlaceholder(100, 100);
-        circlePlaceholder.fill(Qt::white);
-        
-        QPainter painter(&circlePlaceholder);
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setBrush(QColor("#E0E0E0"));
-        painter.setPen(QPen(QColor("#D0D0D0"), 1));
-        painter.drawEllipse(0, 0, 99, 99);
-        
-        // Draw simple user icon (two circles for head and body)
+        // Fallback Icon
         painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor("#999999"));
-        painter.drawEllipse(35, 15, 30, 30); // Head
-        painter.drawEllipse(25, 50, 50, 35); // Body
-        painter.end();
-        
-        imageLabel->setPixmap(circlePlaceholder);
+        painter.setBrush(QColor("#E0E5F2")); // Light gray
+        painter.drawRect(0, 0, avatarSize, avatarSize);
+        // Simple head/body
+        painter.setBrush(QColor("#A3AED0"));
+        painter.drawEllipse(35, 25, 40, 40);
+        painter.drawEllipse(25, 70, 60, 50);
     }
+    painter.end();
     
+    imageLabel->setPixmap(circularPixmap);
     imageLabel->setAlignment(Qt::AlignCenter);
-    imageLabel->setFixedSize(100, 100);
+    cardLayout->addWidget(imageLabel);
     
-    // Create a container widget to center the image
-    QWidget *imageContainer = new QWidget();
-    QHBoxLayout *imageLayout = new QHBoxLayout(imageContainer);
-    imageLayout->setContentsMargins(0, 0, 0, 0);
-    imageLayout->addStretch();
-    imageLayout->addWidget(imageLabel);
-    imageLayout->addStretch();
-    
-    // Member name
+    cardLayout->addSpacing(10);
+
+    // --- 2. Name & ID ---
     QLabel *nameLabel = new QLabel(member.name);
-    nameLabel->setStyleSheet("font-weight: bold; font-size: 14px; color: #333; font-family: 'Segoe UI', 'Arial', sans-serif; letter-spacing: 0.5px;");
+    nameLabel->setStyleSheet(
+        "color: #1B2559; " // Dark Navy
+        "font-size: 18px; "
+        "font-weight: 800; "
+        "font-family: 'Segoe UI', sans-serif; "
+        "background: transparent; border: none;"
+    );
     nameLabel->setAlignment(Qt::AlignCenter);
     nameLabel->setWordWrap(true);
-    nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    nameLabel->setMinimumHeight(35);
-    
-    // Member ID
-    QLabel *idLabel = new QLabel(member.id);
-    idLabel->setStyleSheet("font-size: 12px; color: #666; padding: 3px; border-radius: 3px; font-family: 'Courier New', monospace;");
-    idLabel->setAlignment(Qt::AlignCenter);
-    idLabel->setMinimumHeight(25);
-    
-    // Member role
-    QLabel *roleLabel = new QLabel(member.role);
-    roleLabel->setStyleSheet("font-size: 11px; color: #222; padding: 5px; border-radius: 3px; font-weight: bold; font-style: italic;");
-    roleLabel->setAlignment(Qt::AlignCenter);
-    roleLabel->setMinimumHeight(25);
-    
-    // Add to card layout
-    cardLayout->addWidget(imageContainer);
     cardLayout->addWidget(nameLabel);
+
+    QLabel *idLabel = new QLabel(member.id);
+    idLabel->setStyleSheet(
+        "color: #A3AED0; " // Soft Gray
+        "font-size: 13px; "
+        "background: transparent; border: none; font-family: monospace;"
+    );
+    idLabel->setAlignment(Qt::AlignCenter);
     cardLayout->addWidget(idLabel);
-    cardLayout->addWidget(roleLabel);
     
-    // Set card style with shadow effect
-    memberCard->setStyleSheet("QWidget { border: none; border-radius: 8px; background-color: #f5f5f5; } QWidget:hover { background-color: #e8e8e8; }");
-    memberCard->setMaximumWidth(200);
+    cardLayout->addStretch();
     
-    // Add to grid (3 columns)
+    // --- 3. Role Badge ---
+    // Make the role look like a pill badge
+    QLabel *roleLabel = new QLabel(member.role);
+    roleLabel->setAlignment(Qt::AlignCenter);
+    
+    // Dynamic color based on role?
+    QString roleBg = "#F4F7FE";
+    QString roleColor = "#4318FF";
+    
+    if (member.role.contains("Lead") || member.role.contains("Manager")) {
+        roleBg = "#E8EAF6"; // Indigo Tint
+        roleColor = "#303F9F";
+    } else {
+        roleBg = "#E0F2F1"; // Teal Tint
+        roleColor = "#00695C";
+    }
+
+    roleLabel->setStyleSheet(QString(
+        "QLabel { "
+        "  background-color: %1; "
+        "  color: %2; "
+        "  padding: 6px 15px; "
+        "  border-radius: 12px; "
+        "  font-weight: 700; "
+        "  font-size: 12px; "
+        "}"
+    ).arg(roleBg).arg(roleColor));
+    
+    // Container for centering the badge
+    QHBoxLayout *badgeLayout = new QHBoxLayout();
+    badgeLayout->addStretch();
+    badgeLayout->addWidget(roleLabel);
+    badgeLayout->addStretch();
+    
+    cardLayout->addLayout(badgeLayout);
+    
+    // Add to grid logic
     int row = memberCount / 3;
     int col = memberCount % 3;
     gridLayout->addWidget(memberCard, row, col);
@@ -195,17 +293,12 @@ void TeamPage::clearTeamMembers()
 void TeamPage::loadTeamFromFile(const QString &filePath)
 {
     QFile file(filePath);
-    
-    // Try absolute path if relative fails
     if (!file.exists()) {
         QString absolutePath = QCoreApplication::applicationDirPath() + "/../data/team_members.txt";
         file.setFileName(absolutePath);
     }
     
-    qDebug() << "Loading team from:" << file.fileName();
-    
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file:" << file.fileName();
         return;
     }
     
@@ -219,17 +312,15 @@ void TeamPage::loadTeamFromFile(const QString &filePath)
         QStringList parts = line.split(",");
         if (parts.size() >= 3) {
             TeamMember member;
-            member.name = parts[0];
-            member.id = parts[1];
-            member.role = parts[2];
-            member.imagePath = parts.size() > 3 ? parts[3] : "";
+            member.name = parts[0].trimmed();
+            member.id = parts[1].trimmed();
+            member.role = parts[2].trimmed();
+            member.imagePath = parts.size() > 3 ? parts[3].trimmed() : "";
             members.append(member);
-            qDebug() << "Loaded member:" << member.name;
         }
     }
     
     file.close();
-    qDebug() << "Total members loaded:" << members.size();
     loadTeamMembers(members);
 }
 

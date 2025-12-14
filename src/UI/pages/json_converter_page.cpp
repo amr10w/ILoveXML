@@ -15,6 +15,7 @@ JsonConverterPage::JsonConverterPage(QWidget *parent)
     , ui(new Ui::JsonConverterPage)
 {
     ui->setupUi(this);
+    // topBar logic removed in UI refactor
     // setFixedSize(900, 750);
 
     // Initially hide output section

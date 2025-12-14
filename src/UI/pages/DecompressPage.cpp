@@ -15,12 +15,13 @@ extern std::string bpe_decompress_in_memory(const QByteArray& compressedBytes);
 
 
 DecompressPage::DecompressPage(QWidget *parent)
-    : QScrollArea(parent)
+    : QWidget(parent)
     , ui(new Ui::DecompressPage)
     , originalSize(0)
     , decompressedSize(0) 
 {
     ui->setupUi(this);
+    // topBar removed in UI refactor
     // setFixedSize(900, 750);
     
     // Initial UI Setup 

@@ -3,12 +3,12 @@
 
 #include <QWidget>
 #include <QString>
-#include <QScrollArea>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MinifyingPage; }
 QT_END_NAMESPACE
 
-class MinifyingPage : public QScrollArea
+class MinifyingPage : public QWidget
 {
     Q_OBJECT
 

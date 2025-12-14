@@ -15,163 +15,257 @@
   </property>
   <property name="styleSheet">
    <string notr="true">
-    /* Global Background */
-    QWidget { background-color: #f0f0f0; font-family: 'Segoe UI', sans-serif; }
+/* Global styles */
+QWidget {
+    background-color: #e5e7eb;
+}
+QLabel {
+    background-color: transparent;
+}
 
-    /* Scroll Area */
-    QScrollArea { border: none; background-color: transparent; }
-    QWidget#scrollAreaWidgetContents { background-color: transparent; }
+/* Specific styling for scroll area's content wrapper */
+QWidget#scrollAreaWidgetContents {
+    background-color: #e5e7eb;
+}
 
-    /* Header Container */
-    QWidget#headerContainer {
-        background-color: #19183B;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    QLabel#headerTitle {
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        background-color: transparent;
-    }
-    QLabel#headerDesc {
-        color: #ddd;
-        font-size: 14px;
-        background-color: transparent;
-    }
+/* Back Button */
+QPushButton#backButton {
+    background-color: transparent;
+    border: none;
+    color: #ff8f00;
+    font-size: 14px;
+    text-align: left;
+    padding: 8px;
+}
 
-    /* Content Container */
-    QWidget#contentContainer {
-        background-color: white;
-        border-radius: 10px;
-    }
+QPushButton#backButton:hover {
+    background-color: rgba(255, 143, 0, 0.1);
+    border-radius: 6px;
+    text-decoration: none;
+}
 
-    /* Input Label */
-    QLabel#inputLabel {
-        font-weight: bold;
-        font-size: 16px;
-        color: black;
-        background-color: transparent;
-    }
+/* Header Widget (Gradient Amber/Gold) */
+QWidget#headerWidget {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                 stop:0 #ffb300, stop:1 #ff8f00);
+    border-radius: 12px;
+}
 
-    /* Browse Button */
-    QPushButton#browseButton {
-        background-color: #19183B;
-        color: white;
-        border: 1px solid #FFECC0;
-        border-radius: 10px;
-        padding: 10px;
-        font-weight: bold;
-    }
-    QPushButton#browseButton:hover {
-        background-color: black;
-    }
+QLabel#headerTitle {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
 
-    /* OR Label */
-    QLabel#orLabel {
-        color: black;
-        font-weight: bold;
-        background-color: transparent;
-    }
+QLabel#headerDesc {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+}
 
-    /* Text Edit */
-    QTextEdit {
-        background-color: #EEEEEE;
-        color: black;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-    }
+/* Content Widget (White Card) */
+QWidget#contentWidget {
+    background-color: white;
+    border-radius: 12px;
+}
 
-    /* Action Buttons */
-    QPushButton#mostInfluencerButton, QPushButton#mostActiveButton {
-        background-color: #19183B;
-        color: white;
-        font-size: 16px;
-        padding: 15px;
-        border-radius: 10px;
-        font-weight: bold;
-    }
-    QPushButton#mostInfluencerButton:hover, QPushButton#mostActiveButton:hover {
-        background-color: black;
-    }
+/* Labels */
+QLabel#inputLabel, QLabel#orLabel {
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+}
 
-    /* Back Button */
-    QPushButton#backButton {
-         color: #19183B;
-         background-color: transparent;
-         border: none;
-         font-size: 14px;
-         text-align: left;
-    }
-    QPushButton#backButton:hover {
-         color: black;
-         text-decoration: underline;
-    }
+/* Browse Button */
+QPushButton#browseButton {
+    background-color: #fff8e1;
+    color: #ffa000;
+    border: 1px solid #ffe0b2;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+QPushButton#browseButton:hover {
+    background-color: #ffe0b2;
+}
+
+/* Input Text Edit */
+QTextEdit#xmlTextEdit {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #374151;
+}
+
+QTextEdit#xmlTextEdit:focus {
+    border: 2px solid #ffb300;
+    background-color: white;
+}
+
+/* Action Buttons */
+QPushButton#mostInfluencerButton, QPushButton#mostActiveButton {
+    background-color: #ffa000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+QPushButton#mostInfluencerButton:hover, QPushButton#mostActiveButton:hover {
+    background-color: #ff8f00;
+}
+
+/* ScrollBar */
+QScrollBar:vertical {
+    border: none;
+    background: #e0e0e0;
+    width: 10px; 
+    margin: 0px; 
+}
+QScrollBar::handle:vertical {
+    background: #ffb300; 
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #ff8f00; 
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px; 
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
    </string>
   </property>
-  <layout class="QVBoxLayout" name="mainLayout">
-   <property name="leftMargin"><number>20</number></property>
-   <property name="topMargin"><number>20</number></property>
-   <property name="rightMargin"><number>20</number></property>
-   <property name="bottomMargin"><number>20</number></property>
+
+  <layout class="QVBoxLayout" name="rootLayout">
+   <property name="leftMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+
    <item>
     <widget class="QScrollArea" name="scrollArea">
-     <property name="widgetResizable"><bool>true</bool></property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+
      <widget class="QWidget" name="scrollAreaWidgetContents">
-      <layout class="QVBoxLayout" name="scrollLayout">
-       <property name="spacing"><number>20</number></property>
-       
-       <!-- Back Button Row -->
+      <layout class="QVBoxLayout" name="mainLayout">
+       <property name="spacing"><number>16</number></property>
+       <property name="leftMargin"><number>24</number></property>
+       <property name="topMargin"><number>24</number></property>
+       <property name="rightMargin"><number>24</number></property>
+       <property name="bottomMargin"><number>24</number></property>
+
+       <!-- 1. Back Button -->
        <item>
         <widget class="QPushButton" name="backButton">
-         <property name="text"><string>← Back to Operations</string></property>
-         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+         <property name="text">
+          <string>← Back to Operations</string>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
         </widget>
        </item>
 
-       <!-- Header -->
+       <!-- 2. Header Widget -->
        <item>
-        <widget class="QWidget" name="headerContainer" native="true">
-         <property name="minimumSize"><size><width>0</width><height>100</height></size></property>
-         <layout class="QVBoxLayout" name="headerLayout">
+        <widget class="QWidget" name="headerWidget" native="true">
+         <property name="minimumSize">
+          <size><width>0</width><height>120</height></size>
+         </property>
+         <layout class="QHBoxLayout" name="headerLayout">
+          <property name="spacing"><number>16</number></property>
+          <property name="leftMargin"><number>24</number></property>
+          <property name="topMargin"><number>24</number></property>
+          <property name="rightMargin"><number>24</number></property>
+          <property name="bottomMargin"><number>24</number></property>
+
           <item>
-           <widget class="QLabel" name="headerTitle">
-            <property name="text"><string>Influence and Activity</string></property>
-            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           <widget class="QLabel" name="iconLabel">
+            <property name="minimumSize">
+             <size><width>60</width><height>60</height></size>
+            </property>
+            <property name="maximumSize">
+             <size><width>60</width><height>60</height></size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: white; border-radius: 12px; font-size: 24px; font-weight: bold; color: #ff8f00;</string>
+            </property>
+            <property name="text"><string>👑</string></property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
           </item>
+
           <item>
-           <widget class="QLabel" name="headerDesc">
-            <property name="text"><string>Find the most influential and most active users in the network</string></property>
-            <property name="alignment"><set>Qt::AlignCenter</set></property>
-           </widget>
+           <layout class="QVBoxLayout" name="headerTextLayout">
+            <property name="spacing"><number>4</number></property>
+            <item>
+             <widget class="QLabel" name="headerTitle">
+              <property name="text">
+               <string>Influence and Activity</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="headerDesc">
+              <property name="text">
+               <string>Find the most influential and most active users in the network</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
+          <item><spacer name="horizontalSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
          </layout>
         </widget>
        </item>
 
-       <!-- Content -->
+       <!-- 3. Content Widget (White Card) -->
        <item>
-        <widget class="QWidget" name="contentContainer" native="true">
+        <widget class="QWidget" name="contentWidget" native="true">
          <layout class="QVBoxLayout" name="contentLayout">
-          <property name="spacing"><number>15</number></property>
-          <property name="leftMargin"><number>30</number></property>
-          <property name="topMargin"><number>30</number></property>
-          <property name="rightMargin"><number>30</number></property>
-          <property name="bottomMargin"><number>30</number></property>
+          <property name="spacing"><number>20</number></property>
+          <property name="leftMargin"><number>32</number></property>
+          <property name="topMargin"><number>32</number></property>
+          <property name="rightMargin"><number>32</number></property>
+          <property name="bottomMargin"><number>32</number></property>
 
           <item>
            <widget class="QLabel" name="inputLabel">
-            <property name="text"><string>Input XML File</string></property>
+            <property name="text">
+             <string>Input XML File</string>
+            </property>
            </widget>
           </item>
 
           <item>
            <widget class="QPushButton" name="browseButton">
-            <property name="text"><string>Browse XML File</string></property>
-            <property name="minimumHeight"><number>50</number></property>
-            <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+            <property name="minimumSize">
+             <size><width>0</width><height>48</height></size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>⬆  Browse XML File</string>
+            </property>
            </widget>
           </item>
 
@@ -179,57 +273,50 @@
            <widget class="QLabel" name="orLabel">
             <property name="text"><string>OR</string></property>
             <property name="alignment"><set>Qt::AlignCenter</set></property>
+            <property name="styleSheet"><string>color: #ff8f00; font-size: 13px;</string></property>
            </widget>
           </item>
 
           <item>
            <widget class="QTextEdit" name="xmlTextEdit">
-            <property name="placeholderText"><string>Paste your XML content here...</string></property>
-            <property name="minimumHeight"><number>200</number></property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
+            <property name="minimumSize">
+             <size><width>0</width><height>200</height></size>
+            </property>
+            <property name="placeholderText">
+             <string>Paste your XML content here...</string>
+            </property>
            </widget>
           </item>
 
           <item>
-           <layout class="QHBoxLayout" name="buttonsLayout">
-            <property name="spacing"><number>15</number></property>
-            <item>
-             <widget class="QPushButton" name="mostInfluencerButton">
-              <property name="text"><string>Most Influencer</string></property>
-              <property name="minimumHeight"><number>50</number></property>
-              <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="mostActiveButton">
-              <property name="text"><string>Most Active</string></property>
-              <property name="minimumHeight"><number>50</number></property>
-              <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-             </widget>
-            </item>
-           </layout>
+            <layout class="QHBoxLayout" name="buttonsLayout">
+             <property name="spacing"><number>16</number></property>
+             <item>
+              <widget class="QPushButton" name="mostInfluencerButton">
+               <property name="text"><string>Most Influencer</string></property>
+               <property name="minimumSize"><size><width>0</width><height>50</height></size></property>
+               <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="mostActiveButton">
+               <property name="text"><string>Most Active</string></property>
+               <property name="minimumSize"><size><width>0</width><height>50</height></size></property>
+               <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+              </widget>
+             </item>
+            </layout>
           </item>
 
          </layout>
         </widget>
-       </item>
-       
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation"><enum>Qt::Vertical</enum></property>
-         <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
-        </spacer>
        </item>
 
       </layout>
      </widget>
     </widget>
    </item>
+
   </layout>
  </widget>
  <resources/>

@@ -1,7 +1,7 @@
 #ifndef DECOMPRESSPAGE_H
 #define DECOMPRESSPAGE_H
 
-#include <QScrollArea>
+#include <QWidget>
 #include <QString>
 
 // Forward declaration of the UI namespace
@@ -9,7 +9,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class DecompressPage; } 
 QT_END_NAMESPACE
 
-class DecompressPage : public QScrollArea
+class DecompressPage : public QWidget
 {
     Q_OBJECT
 

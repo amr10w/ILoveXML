@@ -16,6 +16,7 @@ SocialRelationsPage::SocialRelationsPage(QWidget *parent)
     , ui(new Ui::SocialRelationsPage)
 {
     ui->setupUi(this);
+    // topBar logic removed in UI refactor
     setMinimumSize(500, 650);
 
     // 1. Connect Navigation

@@ -14,6 +14,7 @@ InfluenceAndActivity::InfluenceAndActivity(QWidget *parent)
     , ui(new Ui::InfluenceAndActivity)
 {
     ui->setupUi(this);
+    // topBar logic removed in UI refactor
     // setFixedSize(900, 750); // Ensuring full responsiveness
 
     // Signals are auto-connected by setupUi via on_widget_signal naming convention

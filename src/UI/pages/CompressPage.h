@@ -3,14 +3,13 @@
 
 #include <QWidget>
 #include <QString>
-#include <QScrollArea>
 
 // Forward declaration of the UI namespace
 QT_BEGIN_NAMESPACE
 namespace Ui { class CompressPage; } 
 QT_END_NAMESPACE
 
-class CompressPage : public QScrollArea
+class CompressPage : public QWidget
 {
     Q_OBJECT
 

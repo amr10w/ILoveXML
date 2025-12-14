@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DecompressPage</class>
- <widget class="QScrollArea" name="DecompressPage">
+ <widget class="QWidget" name="DecompressPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,387 +13,419 @@
   <property name="windowTitle">
    <string>Decompress XML</string>
   </property>
-  <property name="widgetResizable">
-   <bool>true</bool>
+  <property name="styleSheet">
+   <string notr="true">
+/* Global styles */
+QWidget {
+    background-color: #e5e7eb;
+}
+QLabel {
+    background-color: transparent;
+}
+
+/* Specific styling for scroll area's content wrapper */
+QWidget#scrollAreaWidgetContents {
+    background-color: #e5e7eb;
+}
+
+/* Back Button */
+QPushButton#backButton {
+    background-color: transparent;
+    border: none;
+    color: #4f46e5;
+    font-size: 14px;
+    text-align: left;
+    padding: 8px;
+}
+
+QPushButton#backButton:hover {
+    background-color: rgba(79, 70, 229, 0.1);
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+/* Header Widget (Gradient Blue) - Overriding for Green Theme if desired, but user asked for Gradient Blue styling from Reference? 
+   User said: "Update the headerWidget to use the Gradient Blue styling from the Reference"
+   Okay, I will use the blue gradient. */
+QWidget#headerWidget {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                 stop:0 #2563eb, stop:1 #0891b2);
+    border-radius: 12px;
+}
+
+QLabel#titleLabel {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+QLabel#subtitleLabel {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+}
+
+/* Content Widget (White Card) */
+QWidget#contentWidget {
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* Labels */
+QLabel#inputLabel, QLabel#outputLabel {
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Browse Button */
+QPushButton#browseButton {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border: 1px solid #93c5fd;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+QPushButton#browseButton:hover {
+    background-color: #bfdbfe;
+}
+
+/* Input Text Edit */
+QTextEdit#inputTextEdit {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #374151;
+}
+
+QTextEdit#inputTextEdit:focus {
+    border: 2px solid #3b82f6;
+    background-color: white;
+}
+
+/* Output Text Edit */
+QTextEdit#outputTextEdit {
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #0c4a6e;
+}
+
+/* Decompress Button */
+QPushButton#decompressButton {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+QPushButton#decompressButton:hover {
+    background-color: #1d4ed8;
+}
+
+QPushButton#decompressButton:pressed {
+    background-color: #1e40af;
+}
+
+/* Download Button */
+QPushButton#downloadButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton#downloadButton:hover {
+    background-color: #2563eb;
+}
+
+/* Stats Box Styling */
+QWidget#originalSizeBox, QWidget#decompressedSizeBox, QWidget#reductionRatioBox {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+QLabel { color: #374151; }
+QLabel#originalSizeLabel, QLabel#decompressedSizeLabel, QLabel#reductionLabel {
+    color: #111827;
+}
+
+/* ScrollBar */
+QScrollBar:vertical {
+    border: none;
+    background: #e0e0e0;
+    width: 10px; 
+    margin: 0px; 
+}
+QScrollBar::handle:vertical {
+    background: #2563eb; 
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #1d4ed8; 
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px; 
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+   </string>
   </property>
-  <widget class="QWidget" name="scrollAreaWidgetContents">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>15</number>
-    </property>
-    <property name="leftMargin">
-     <number>30</number>
-    </property>
-    <property name="topMargin">
-     <number>30</number>
-    </property>
-    <property name="rightMargin">
-     <number>30</number>
-    </property>
-    <property name="bottomMargin">
-     <number>30</number>
-    </property>
-    
-    <item alignment="Qt::AlignLeft"> 
-     <widget class="QPushButton" name="backButton">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-        QPushButton {
-         border: none;
-         background-color: transparent;
-         color: black; 
-         padding: 5px;
-         text-align: left;
-        }
-        QPushButton:hover {
-         text-decoration: underline;
-        }
-       </string>
-      </property>
-      <property name="text">
-       <string>← Back to Operations</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QWidget" name="headerWidget">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: #4CAF50; border-radius: 10px; color: white;</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_header">
+
+  <layout class="QVBoxLayout" name="rootLayout">
+   <property name="leftMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <layout class="QVBoxLayout" name="mainLayout">
+       <property name="spacing"><number>16</number></property>
+       <property name="leftMargin"><number>24</number></property>
+       <property name="topMargin"><number>24</number></property>
+       <property name="rightMargin"><number>24</number></property>
+       <property name="bottomMargin"><number>24</number></property>
+
+       <!-- 1. Back Button (Plain) -->
        <item>
-        <widget class="QLabel" name="iconLabel">
+        <widget class="QPushButton" name="backButton">
          <property name="text">
-          <string>📂</string>
+          <string>← Back to Operations</string>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-          </font>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
         </widget>
        </item>
+
+       <!-- 2. Header Widget -->
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_title">
-         <item>
-          <widget class="QLabel" name="titleLabel">
-           <property name="font">
-            <font>
-             <pointsize>16</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Decompress XML</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="subtitleLabel">
-           <property name="text">
-            <string>Decompressing BPE encoded XML back to its original form</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="headerWidget" native="true">
+         <property name="minimumSize">
+          <size><width>0</width><height>120</height></size>
+         </property>
+         <layout class="QHBoxLayout" name="headerLayout">
+          <property name="spacing"><number>16</number></property>
+          <property name="leftMargin"><number>24</number></property>
+          <property name="topMargin"><number>24</number></property>
+          <property name="rightMargin"><number>24</number></property>
+          <property name="bottomMargin"><number>24</number></property>
+
+          <item>
+           <widget class="QLabel" name="iconLabel">
+            <property name="minimumSize">
+             <size><width>60</width><height>60</height></size>
+            </property>
+            <property name="maximumSize">
+             <size><width>60</width><height>60</height></size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: white; border-radius: 12px; font-size: 24px; font-weight: bold; color: #2563eb;</string>
+            </property>
+            <property name="text"><string>📂</string></property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+
+          <item>
+           <layout class="QVBoxLayout" name="headerTextLayout">
+            <property name="spacing"><number>4</number></property>
+            <item>
+             <widget class="QLabel" name="titleLabel">
+              <property name="text">
+               <string>Decompress XML</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="subtitleLabel">
+              <property name="text">
+               <string>Decompressing BPE encoded XML back to its original form</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item><spacer name="horizontalSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+         </layout>
+        </widget>
        </item>
+
+       <!-- 3. Content Widget (White Card) -->
        <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
+        <widget class="QWidget" name="contentWidget" native="true">
+         <layout class="QVBoxLayout" name="contentLayout">
+          <property name="spacing"><number>20</number></property>
+          <property name="leftMargin"><number>32</number></property>
+          <property name="topMargin"><number>32</number></property>
+          <property name="rightMargin"><number>32</number></property>
+          <property name="bottomMargin"><number>32</number></property>
+
+          <!-- Input Label -->
+          <item>
+           <widget class="QLabel" name="inputLabel">
+            <property name="text">
+             <string>Input Compressed File (.comp)</string>
+            </property>
+           </widget>
+          </item>
+
+          <!-- Browse Button -->
+          <item>
+           <widget class="QPushButton" name="browseButton">
+            <property name="minimumSize">
+             <size><width>0</width><height>48</height></size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>📂 Browse Compressed File</string>
+            </property>
+           </widget>
+          </item>
+
+          <!-- Input Text Edit -->
+          <item>
+           <widget class="QTextEdit" name="inputTextEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size><width>0</width><height>200</height></size>
+            </property>
+            <property name="placeholderText">
+             <string>Use the 'Browse Compressed File' button to load a .comp file...</string>
+            </property>
+           </widget>
+          </item>
+
+          <!-- Decompress Button -->
+          <item>
+           <widget class="QPushButton" name="decompressButton">
+            <property name="minimumSize">
+             <size><width>0</width><height>50</height></size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>🔓 Decompress XML</string>
+            </property>
+           </widget>
+          </item>
+
+          <!-- Output Label -->
+          <item>
+           <widget class="QLabel" name="outputLabel">
+            <property name="text"><string>Decompressed XML Output:</string></property>
+            <property name="visible"><bool>false</bool></property>
+           </widget>
+          </item>
+
+          <!-- Output Text Edit -->
+          <item>
+           <widget class="QTextEdit" name="outputTextEdit">
+            <property name="minimumSize">
+             <size><width>0</width><height>250</height></size>
+            </property>
+            <property name="readOnly"><bool>true</bool></property>
+            <property name="visible"><bool>false</bool></property>
+           </widget>
+          </item>
+          
+          <!-- Stats Container -->
+          <item>
+           <widget class="QWidget" name="statsContainer">
+            <property name="visible"><bool>false</bool></property>
+            <layout class="QHBoxLayout" name="horizontalLayout_stats">
+             <property name="spacing"><number>10</number></property>
+             <item>
+              <widget class="QWidget" name="originalSizeBox">
+               <layout class="QVBoxLayout" name="verticalLayout_original">
+                <item><widget class="QLabel" name="label_original"><property name="text"><string>Compressed Size</string></property></widget></item>
+                <item><widget class="QLabel" name="originalSizeLabel"><property name="text"><string>0 bytes</string></property><property name="font"><font><bold>true</bold><pointsize>12</pointsize></font></property></widget></item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="decompressedSizeBox">
+               <layout class="QVBoxLayout" name="verticalLayout_decompressed">
+                <item><widget class="QLabel" name="label_decompressed"><property name="text"><string>Decompressed Size</string></property></widget></item>
+                <item><widget class="QLabel" name="decompressedSizeLabel"><property name="text"><string>0 bytes</string></property><property name="font"><font><bold>true</bold><pointsize>12</pointsize></font></property></widget></item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="reductionRatioBox">
+               <layout class="QVBoxLayout" name="verticalLayout_reduction">
+                <item><widget class="QLabel" name="label_reduction"><property name="text"><string>Compression Ratio</string></property></widget></item>
+                <item><widget class="QLabel" name="reductionLabel"><property name="text"><string>0.00%</string></property><property name="font"><font><bold>true</bold><pointsize>12</pointsize></font></property></widget></item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+
+          <!-- Download Button -->
+          <item>
+           <widget class="QPushButton" name="downloadButton">
+            <property name="minimumSize">
+             <size><width>0</width><height>45</height></size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>⬇️ Download Decompressed XML</string>
+            </property>
+            <property name="visible"><bool>false</bool></property>
+           </widget>
+          </item>
+
+         </layout>
+        </widget>
        </item>
+
       </layout>
      </widget>
-    </item>
-    
-    <item>
-     <widget class="QLabel" name="inputLabel">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: black;</string>
-      </property>
-      <property name="text">
-       <string>Input Compressed File (.comp)</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QPushButton" name="browseButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>40</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: #EEFAF0; color: #4CAF50; border: 1px solid #4CAF50; border-radius: 5px;</string>
-      </property>
-      <property name="text">
-       <string>📂 Browse Compressed File</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QTextEdit" name="inputTextEdit">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>1</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumHeight">
-       <number>150</number>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: black;</string>
-      </property>
-      <property name="placeholderText">
-       <string>Use the 'Browse Compressed File' button to load a .comp file...</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QPushButton" name="decompressButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: #4CAF50; color: white; border-radius: 8px;</string>
-      </property>
-      <property name="text">
-       <string>🔓 Decompress XML</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QLabel" name="outputLabel">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Decompressed XML Output:</string>
-      </property>
-      <property name="visible">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: black;</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QTextEdit" name="outputTextEdit">
-      <property name="visible">
-       <bool>false</bool>
-      </property>
-      <property name="minimumHeight">
-       <number>150</number>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: black;</string>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QWidget" name="statsContainer">
-      <property name="visible">
-       <bool>false</bool>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_stats">
-       <property name="spacing">
-        <number>10</number>
-       </property>
-       
-       <item>
-        <widget class="QWidget" name="originalSizeBox">
-         <property name="styleSheet">
-          <string notr="true">background-color: #EEE; border-radius: 8px; padding: 10px; border: 1px solid #CCC; color: black;</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_original">
-          <item>
-           <widget class="QLabel" name="label_original">
-            <property name="text">
-             <string>Compressed Size</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="originalSizeLabel">
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>0 bytes</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       
-       <item>
-        <widget class="QWidget" name="decompressedSizeBox">
-         <property name="styleSheet">
-          <string notr="true">background-color: #EEE; border-radius: 8px; padding: 10px; border: 1px solid #CCC; color: black;</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_decompressed">
-          <item>
-           <widget class="QLabel" name="label_decompressed">
-            <property name="text">
-             <string>Decompressed Size</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="decompressedSizeLabel">
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>0 bytes</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       
-       <item>
-        <widget class="QWidget" name="reductionRatioBox">
-         <property name="styleSheet">
-          <string notr="true">background-color: #EEE; border-radius: 8px; padding: 10px; border: 1px solid #CCC; color: black;</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_reduction">
-          <item>
-           <widget class="QLabel" name="label_reduction">
-            <property name="text">
-             <string>Compression Ratio</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="reductionLabel">
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>0.00%</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    
-    <item>
-     <widget class="QPushButton" name="downloadButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: #4CAF50; color: white; border-radius: 8px;</string>
-      </property>
-      <property name="text">
-       <string>⬇️ Download Decompressed XML</string>
-      </property>
-      <property name="visible">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    
-    <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    
-   </layout>
-  </widget>
+    </widget>
+   </item>
+
+  </layout>
  </widget>
  <resources/>
  <connections/>

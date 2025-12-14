@@ -13,12 +13,13 @@
 
 
 CompressPage::CompressPage(QWidget *parent)
-    : QScrollArea(parent)
+    : QWidget(parent)
     , ui(new Ui::CompressPage)
     , originalSize(0)
     , compressedSize(0) 
 {
     ui->setupUi(this);
+    // topBar removed in UI refactor
     // setFixedSize(900, 750);
     
     // Initial UI Setup 

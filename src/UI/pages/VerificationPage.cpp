@@ -37,6 +37,13 @@ VerificationPage::VerificationPage(QWidget *parent) :
     ui(new Ui::VerificationPage)
 {
     ui->setupUi(this);
+    
+    // topBar removed in UI refactor
+    // setAttribute(Qt::WA_StyledBackground, true) previously set here is no longer needed for topBar
+
+    
+    // Explicitly connect back button signal
+    connect(ui->btnBack, &QPushButton::clicked, this, &VerificationPage::on_btnBack_clicked);
 }
 
 VerificationPage::~VerificationPage()

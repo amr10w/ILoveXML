@@ -1,11 +1,11 @@
 #ifndef POSTSEARCH_H
 #define POSTSEARCH_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QPushButton>
 #include <QTextEdit>
 
-class PostSearch : public QMainWindow
+class PostSearch : public QWidget
 {
     Q_OBJECT
 

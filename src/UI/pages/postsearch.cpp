@@ -11,6 +11,7 @@
 #include <QInputDialog>
 #include <QTextStream>
 #include <QPixmap>
+#include <QScrollArea>
 // #include <QGraphicsDropShadowEffect> // Start using effects if needed, but styling is mostly QSS
 // #include "../../core/SearchTopic.h" 
 #include "../../core/SearchWord.h" 
@@ -19,18 +20,18 @@
 // Theme colors
 #define ORANGE_THEME "#FF6D1F"
 #define LIGHT_ORANGE_BG "#FFF3E0" // Lighter orange for browse button background
-#define PAGE_BG "#F4F7FE" // Light gray/blue-ish background similar to reference
-#define TEXT_COLOR "#2B3674" // Dark blue/gray text color often used with this style
+#define PAGE_BG "#e5e7eb" // Standard gray background
+#define TEXT_COLOR "#1f2937" // Dark text color
 
 PostSearch::PostSearch(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
 {
     setMinimumSize(900, 750);
     setWindowTitle("Post Search");
 
     // Global styling
     setStyleSheet(QString(
-        "QMainWindow { background-color: %1; }"
+        "QWidget { background-color: %1; font-family: 'Segoe UI', sans-serif; }"
         "QMessageBox { background-color: white; }"
     ).arg(PAGE_BG));
 
@@ -52,152 +53,165 @@ QPushButton* PostSearch::createStyledButton(const QString& text, const QString& 
 
 void PostSearch::setupUI()
 {
-    QWidget *centralWidget = new QWidget(this);
-    setCentralWidget(centralWidget);
+    // Root Layout (0 margins, contains ScrollArea)
+    QVBoxLayout *rootLayout = new QVBoxLayout(this);
+    rootLayout->setContentsMargins(0, 0, 0, 0);
+    rootLayout->setSpacing(0);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
-    // Margins for the main page
-    mainLayout->setContentsMargins(30, 20, 30, 30);
-    mainLayout->setSpacing(20);
+    // Scroll Area
+    QScrollArea *scrollArea = new QScrollArea(this);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setStyleSheet("QScrollArea { background-color: transparent; border: none; }");
 
-    // 1. Navigation: Back Link (Top-Left)
-    // Move "Back" button out of the main container. It should be a simple text link.
+    // Scroll Content Widget
+    QWidget *scrollAreaWidgetContents = new QWidget();
+    scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+    scrollAreaWidgetContents->setStyleSheet("#scrollAreaWidgetContents { background-color: transparent; }");
+    
+    // Main Layout inside Scroll Area
+    QVBoxLayout *mainLayout = new QVBoxLayout(scrollAreaWidgetContents);
+    mainLayout->setContentsMargins(24, 24, 24, 24);
+    mainLayout->setSpacing(16);
+
+    // 1. Navigation: Back Button (Directly in mainLayout)
     QPushButton *backBtn = new QPushButton("← Back to Operations");
     backBtn->setCursor(Qt::PointingHandCursor);
+    backBtn->setObjectName("backButton");
     backBtn->setStyleSheet(QString(
-        "QPushButton {"
+        "QPushButton#backButton {"
         "  background-color: transparent;"
-        "  color: %1;" // Use theme color or a dark text color
+        "  color: %1;"
         "  font-size: 14px;"
         "  border: none;"
         "  text-align: left;"
-        "  font-weight: 500;"
+        "  padding: 8px;"
         "}"
-        "QPushButton:hover { text-decoration: underline; }"
-    ).arg(TEXT_COLOR));
-    backBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        "QPushButton#backButton:hover { background-color: rgba(255, 109, 31, 0.1); border-radius: 6px; text-decoration: none; }"
+    ).arg(ORANGE_THEME));
     
     connect(backBtn, &QPushButton::clicked, this, &PostSearch::on_backButton_clicked);
     mainLayout->addWidget(backBtn);
 
-    // 2. Header Structure: Contained, rounded header card
+    // 2. Header Widget: Contained, rounded header card
     QWidget *headerWidget = new QWidget();
     headerWidget->setObjectName("headerWidget");
     headerWidget->setStyleSheet(QString(
         "#headerWidget {"
-        "  background-color: %1;" // Orange Theme
-        "  border-radius: 20px;"
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #ff6d1f, stop:1 #ef6c00);"
+        "  border-radius: 12px;"
         "}"
-    ).arg(ORANGE_THEME));
+    ));
 
     QHBoxLayout *headerLayout = new QHBoxLayout(headerWidget);
-    headerLayout->setContentsMargins(25, 25, 25, 25);
-    headerLayout->setSpacing(20);
+    headerLayout->setContentsMargins(24, 24, 24, 24);
+    headerLayout->setSpacing(16);
 
-    // Icon (Optional - Using a simple text icon or placeholder for now)
-    QLabel *iconLabel = new QLabel("🔎"); // Using text representation of code/xml icon
+    // Icon
+    QLabel *iconLabel = new QLabel("🔎");
     iconLabel->setAlignment(Qt::AlignCenter);
     iconLabel->setFixedSize(60, 60);
-    iconLabel->setStyleSheet(
-        "background-color: rgba(255, 255, 255, 0.2);" // Semi-transparent white
-        "color: white;"
+    iconLabel->setStyleSheet(QString(
+        "background-color: white;"
+        "color: %1;"
         "border-radius: 12px;"
         "font-size: 24px;"
         "font-weight: bold;"
-    );
+    ).arg(ORANGE_THEME));
     headerLayout->addWidget(iconLabel);
 
-    // Title & Description Container
+    // Title & Description
     QVBoxLayout *headerTextLayout = new QVBoxLayout();
-    headerTextLayout->setSpacing(5);
+    headerTextLayout->setSpacing(4);
 
     QLabel *titleLabel = new QLabel("Post Search");
-    titleLabel->setStyleSheet("color: white; font-size: 24px; font-weight: bold;");
+    titleLabel->setStyleSheet("color: white; font-size: 24px; font-weight: bold; background-color: transparent;");
     headerTextLayout->addWidget(titleLabel);
 
     QLabel *descLabel = new QLabel("Finding posts related to topics or words");
-    descLabel->setStyleSheet("color: rgba(255, 255, 255, 0.9); font-size: 14px;");
+    descLabel->setStyleSheet("color: rgba(255, 255, 255, 0.9); font-size: 13px; background-color: transparent;");
     headerTextLayout->addWidget(descLabel);
 
     headerLayout->addLayout(headerTextLayout);
-    headerLayout->addStretch(); // Push content to left
+    headerLayout->addStretch(); 
 
     mainLayout->addWidget(headerWidget);
 
     // 3. Main Content: White Card
-    QWidget *contentCard = new QWidget();
-    contentCard->setObjectName("contentCard");
-    contentCard->setStyleSheet(
-        "#contentCard {"
+    QWidget *contentWidget = new QWidget();
+    contentWidget->setObjectName("contentWidget");
+    contentWidget->setStyleSheet(
+        "#contentWidget {"
         "  background-color: white;"
-        "  border-radius: 20px;"
+        "  border-radius: 12px;"
         "}"
     );
 
-    QVBoxLayout *cardLayout = new QVBoxLayout(contentCard);
-    cardLayout->setContentsMargins(30, 30, 30, 30);
-    cardLayout->setSpacing(20);
+    QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
+    contentLayout->setContentsMargins(32, 32, 32, 32);
+    contentLayout->setSpacing(20);
 
     // Input Label
     QLabel *inputLabel = new QLabel("Input XML File");
-    inputLabel->setStyleSheet(QString("font-weight: bold; font-size: 16px; color: %1;").arg(TEXT_COLOR));
-    cardLayout->addWidget(inputLabel);
+    inputLabel->setStyleSheet(QString("font-weight: 600; font-size: 14px; color: %1; background-color: transparent;").arg(TEXT_COLOR));
+    contentLayout->addWidget(inputLabel);
 
     // Browse Button
-    browseButton = new QPushButton("  Browse XML File"); // Added spaces for loose centering if needed, or rely on layout
+    browseButton = new QPushButton("⬆  Browse XML File");
     browseButton->setCursor(Qt::PointingHandCursor);
-    // Use an icon if possible, but text is fine. Reference has an upload icon.
-    // mimicking reference style: light blue bg, blue text. Here: light orange bg, orange text.
     browseButton->setStyleSheet(QString(
         "QPushButton {"
-        "  background-color: %1;" // Light Orange
-        "  color: %2;" // Orange Theme
-        "  border: none;"
-        "  border-radius: 10px;"
-        "  font-weight: bold;"
-        "  padding: 15px;"
+        "  background-color: #fff3e0;" 
+        "  color: %1;"
+        "  border: 1px solid #ffe0b2;"
+        "  border-radius: 6px;"
+        "  font-weight: 500;"
+        "  padding: 12px 24px;"
         "  font-size: 14px;"
         "}"
-        "QPushButton:hover { background-color: #FFE0B2; }"
-    ).arg(LIGHT_ORANGE_BG).arg(ORANGE_THEME));
-    cardLayout->addWidget(browseButton);
+        "QPushButton:hover { background-color: #ffe0b2; }"
+    ).arg(ORANGE_THEME));
+    contentLayout->addWidget(browseButton);
+
+    // OR Label
+    QLabel *orLabel = new QLabel("OR");
+    orLabel->setAlignment(Qt::AlignCenter);
+    orLabel->setStyleSheet(QString("color: %1; font-size: 13px; background-color: transparent;").arg(ORANGE_THEME));
+    contentLayout->addWidget(orLabel);
 
     // Text Area
     xmlTextEdit = new QTextEdit();
     xmlTextEdit->setPlaceholderText("Paste your XML content here...");
     xmlTextEdit->setMinimumHeight(200);
-    xmlTextEdit->setStyleSheet(
+    xmlTextEdit->setStyleSheet(QString(
         "QTextEdit {"
-        "  background-color: #FAFAFA;" // Very light gray
-        "  border: 1px solid #E0E0E0;" // 1px border
-        "  border-radius: 10px;"
-        "  padding: 15px;"
-        "  color: #333;"
-        "  font-size: 14px;"
-        "  font-family: Consolas, monospace;"
+        "  background-color: #f9fafb;"
+        "  border: 1px solid #e5e7eb;"
+        "  border-radius: 8px;"
+        "  padding: 12px;"
+        "  color: #374151;"
+        "  font-size: 13px;"
+        "  font-family: 'Courier New', monospace;"
         "}"
-    );
-    cardLayout->addWidget(xmlTextEdit);
-
-    cardLayout->addSpacing(10);
+        "QTextEdit:focus { border: 2px solid %1; background-color: white; }"
+    ).arg(ORANGE_THEME));
+    contentLayout->addWidget(xmlTextEdit);
 
     // 4. Buttons (Post Search by Topics / Words)
-    // Style: Match size and shape of primary button in reference.
     QHBoxLayout *actionsLayout = new QHBoxLayout();
-    actionsLayout->setSpacing(15);
+    actionsLayout->setSpacing(16);
 
     QString actionButtonStyle = QString(
         "QPushButton {"
-        "  background-color: %1;" // Orange Theme
+        "  background-color: %1;"
         "  color: white;"
         "  border: none;"
-        "  border-radius: 12px;" // Matching card radius proportion or reference button
-        "  font-weight: bold;"
+        "  border-radius: 8px;"
+        "  font-weight: 600;"
         "  font-size: 15px;"
-        "  padding: 15px;"
+        "  padding: 12px 24px;"
         "}"
-        "QPushButton:hover { background-color: #E65100; }" // Darker orange
-        "QPushButton:pressed { background-color: #BF360C; }"
+        "QPushButton:hover { background-color: #e65100; }"
     ).arg(ORANGE_THEME);
 
     postsearchByTopics = new QPushButton("Post search by topics");
@@ -211,10 +225,13 @@ void PostSearch::setupUI()
     actionsLayout->addWidget(postsearchByTopics);
     actionsLayout->addWidget(postsearchByWords);
 
-    cardLayout->addLayout(actionsLayout);
+    contentLayout->addLayout(actionsLayout);
 
-    mainLayout->addWidget(contentCard);
+    mainLayout->addWidget(contentWidget);
     mainLayout->addStretch(); // Fill remaining space
+
+    scrollArea->setWidget(scrollAreaWidgetContents);
+    rootLayout->addWidget(scrollArea);
 }
 
 // ----------------- SLOTS -----------------
@@ -266,7 +283,7 @@ void PostSearch::on_searchByTopics_clicked()
 
     // --- Core Search Logic ---
     try {
-        // 3. Call the external function, returning PostMatchTopic vector
+        // 3. Call the external function, returning PostMatchTC vector
         std::vector<PostMatch> results = searchPostsByTopic(xmlContentStd, topicStd);
 
         // 4. Format the Results for Display (Manual QString building)
