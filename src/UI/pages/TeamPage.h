@@ -14,6 +14,7 @@ struct TeamMember {
     QString id;
     QString role;
     QString imagePath;
+    QString linkedinUrl;
 };
 
 class TeamPage : public QWidget

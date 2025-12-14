@@ -16,6 +16,8 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
 #include <QEvent>
+#include <QDesktopServices>
+#include <QUrl>
 
 // Helper class for the hoverable card
 class TeamCard : public QWidget {
@@ -142,12 +144,12 @@ TeamPage::~TeamPage()
 void TeamPage::addTeamMember(const TeamMember &member)
 {
     if (!gridLayout) return;
-    
+
     teamMembers.append(member);
     
     // Create custom hoverable card
     TeamCard *memberCard = new TeamCard();
-    memberCard->setFixedSize(260, 320); // Fixed size for consistent nice cards
+    memberCard->setFixedSize(260, 360); // Increased height for link
     
     QVBoxLayout *cardLayout = new QVBoxLayout(memberCard);
     cardLayout->setContentsMargins(20, 30, 20, 30);
@@ -223,8 +225,6 @@ void TeamPage::addTeamMember(const TeamMember &member)
     idLabel->setAlignment(Qt::AlignCenter);
     cardLayout->addWidget(idLabel);
     
-    cardLayout->addStretch();
-    
     // --- 3. Role Badge ---
     // Make the role look like a pill badge
     QLabel *roleLabel = new QLabel(member.role);
@@ -260,6 +260,44 @@ void TeamPage::addTeamMember(const TeamMember &member)
     badgeLayout->addStretch();
     
     cardLayout->addLayout(badgeLayout);
+
+    // --- 4. LinkedIn Link (Redesigned as Button) ---
+    if (!member.linkedinUrl.isEmpty()) {
+        QPushButton *linkedinBtn = new QPushButton("LinkedIn Profile");
+        linkedinBtn->setCursor(Qt::PointingHandCursor);
+        linkedinBtn->setStyleSheet(
+            "QPushButton {"
+            "  background-color: #0077b5;" // LinkedIn Blue
+            "  color: white;"
+            "  border: none;"
+            "  border-radius: 6px;"
+            "  padding: 6px 12px;"
+            "  font-weight: bold;"
+            "  font-family: 'Segoe UI', sans-serif;"
+            "}"
+            "QPushButton:hover {"
+            "  background-color: #006097;" // Slightly darker on hover
+            "}"
+        );
+        
+        connect(linkedinBtn, &QPushButton::clicked, [member](){
+            QDesktopServices::openUrl(QUrl(member.linkedinUrl));
+        });
+        
+        // Center the button
+        QHBoxLayout *btnLayout = new QHBoxLayout();
+        btnLayout->addStretch();
+        btnLayout->addWidget(linkedinBtn);
+        btnLayout->addStretch();
+        
+        cardLayout->addSpacing(10);
+        cardLayout->addLayout(btnLayout);
+    } else {
+         // Optional spacer if no button
+         // cardLayout->addSpacing(30);
+    }
+    
+    cardLayout->addStretch();
     
     // Add to grid logic
     int row = memberCount / 3;
@@ -315,7 +353,15 @@ void TeamPage::loadTeamFromFile(const QString &filePath)
             member.name = parts[0].trimmed();
             member.id = parts[1].trimmed();
             member.role = parts[2].trimmed();
-            member.imagePath = parts.size() > 3 ? parts[3].trimmed() : "";
+            // Check for Image Path (4th column)
+            if (parts.size() >= 4) {
+                 member.imagePath = parts[3].trimmed();
+            }
+            // Check for LinkedIn URL (5th column)
+            if (parts.size() >= 5) {
+                 member.linkedinUrl = parts[4].trimmed();
+            }
+            
             members.append(member);
         }
     }
