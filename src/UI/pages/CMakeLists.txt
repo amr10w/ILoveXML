@@ -1,6 +1,9 @@
 set(CMAKE_AUTORCC ON)
 
 add_library(UI_Pages STATIC
+    LoadingOverlay.h
+    LoadingOverlay.cpp
+    LoadingOverlay.ui
     WelcomePage.cpp
     WelcomePage.h
     WelcomePage.ui
@@ -53,6 +56,7 @@ target_link_libraries(UI_Pages
     PRIVATE
     Qt6::Core
     Qt6::Widgets
+    Qt6::Concurrent
 )
 
 target_include_directories(UI_Pages
