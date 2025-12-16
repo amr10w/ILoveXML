@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(iLoveXML LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Concurrent)
 
 qt_standard_project_setup()
 
@@ -40,6 +40,7 @@ target_link_libraries(ilovexml_gui
         CLI
         Qt::Core
         Qt::Widgets
+        Qt::Concurrent
         ${GVC_LIBS}
 )
 

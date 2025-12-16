@@ -11,7 +11,7 @@ PUBLIC
     UI_Pages 
 PRIVATE
     core 
-    Qt6::Core Qt6::Widgets
+    Qt6::Core Qt6::Widgets Qt::Concurrent
 )
 
 target_include_directories(UI

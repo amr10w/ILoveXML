@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include "LoadingOverlay.h"
 
 // Forward declaration of the UI namespace
 QT_BEGIN_NAMESPACE
@@ -23,6 +24,7 @@ private slots:
     
     // This function will now call the new backend utility: compressXMLString
     void onCompress(); 
+    void onCompressFinished();
     void onDownload();
 
 signals:
@@ -30,11 +32,12 @@ signals:
 
 private:
     Ui::CompressPage *ui;
+    LoadingOverlay *loader;
+    QFutureWatcher<void> watcher;
     QString inputQString;
     QString currentFilePath;
     qint64 originalSize;
     qint64 compressedSize;
-
     QByteArray outputComp;
 
     void updateStatistics();
