@@ -21,6 +21,7 @@ dist/
 *.dll
 *.so
 *.dylib
+!ilovexml_installer.exe
 
 # ---- CMake ----
 CMakeFiles/
