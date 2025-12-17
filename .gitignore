@@ -12,7 +12,6 @@ bin/
 obj/
 out/
 dist/
-installation/
 
 # ---- C++ compiled files ----
 *.exe
