@@ -7,6 +7,7 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Concurrent)
 qt_standard_project_setup()
 
 set(GRAPHVIZ_DIR "C:/Progra~1/Graphviz")
+set(GRAPHVIZ_FOUND TRUE)
 
 set(GRAPHVIZ_DLL_NAMES 
     "gvc.dll" 
