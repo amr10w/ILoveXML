@@ -59,14 +59,16 @@ void InfluenceAndActivity::on_mostInfluencerButton_clicked()
     try {
         Graph graph(content);
         
-        int mostInfluencerPersonId = graph.getMostInfluencerId();
-        std::string mostInfluencerPersonName = graph.getName(mostInfluencerPersonId);
+        std::vector<int> mostInfluencerIds = graph.getMostInfluencerId();
         
         QString resultMessage;
-        if (mostInfluencerPersonId != -1) {
-             resultMessage = QString("The Most Influencer:\nID: %1\nName: %2")
-                                 .arg(mostInfluencerPersonId)
-                                 .arg(QString::fromStdString(mostInfluencerPersonName));
+        if (!mostInfluencerIds.empty()) {
+             QStringList details;
+             for (int id : mostInfluencerIds) {
+                 std::string name = graph.getName(id);
+                 details << QString("ID: %1, Name: %2").arg(id).arg(QString::fromStdString(name));
+             }
+             resultMessage = "The Most Influencer(s):\n" + details.join("\n");
         } else {
              resultMessage = "Could not identify the most influencer. Check the XML input format.";
         }
@@ -109,14 +111,16 @@ void InfluenceAndActivity::on_mostActiveButton_clicked()
     try {
         Graph graph(content);
       
-        int mostActivePersonId = graph.getMostActivePersonId();
-        std::string mostActivePersonName = graph.getName(mostActivePersonId);
+        std::vector<int> mostActiveIds = graph.getMostActivePersonId();
         
         QString resultMessage;
-        if (mostActivePersonId != -1) { 
-             resultMessage = QString("The Most Active User :\nID: %1\nName: %2")
-                                 .arg(mostActivePersonId)
-                                 .arg(QString::fromStdString(mostActivePersonName));
+        if (!mostActiveIds.empty()) { 
+             QStringList details;
+             for (int id : mostActiveIds) {
+                 std::string name = graph.getName(id);
+                 details << QString("ID: %1, Name: %2").arg(id).arg(QString::fromStdString(name));
+             }
+             resultMessage = "The Most Active User(s):\n" + details.join("\n");
         } else {
              resultMessage = "Could not identify the most active user. Check the XML input format.";
         }

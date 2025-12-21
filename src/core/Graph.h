@@ -28,10 +28,10 @@ public:
     void print();
     int getNumberOfUsers();
     GRAPH getGraph() const;
-    int getMostInfluencerId();
-    std::string getMostInfluencerName();
-    int getMostActivePersonId();
-    std::string getMostActivePersonName();
+    std::vector<int> getMostInfluencerId();
+    std::vector<std::string> getMostInfluencerName();
+    std::vector<int> getMostActivePersonId();
+    std::vector<std::string> getMostActivePersonName();
     int getMostActivePersonIdPosts();
     std::string getName(int id);
     std::vector<int> getFollowings(int id);

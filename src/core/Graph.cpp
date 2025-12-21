@@ -182,41 +182,54 @@ GRAPH Graph::getGraph() const
     return graph;
 }
 
-int Graph::getMostInfluencerId()
+std::vector<int> Graph::getMostInfluencerId()
 {
     if (graph.empty()) {
-        return -1;
+        return {};
     }
     
-    int mostInfluencerId = -1;
+    std::vector<int> mostInfluencerIds;
     size_t maxFollowers = 0;
 
+    // First pass: find the maximum follower count
+    bool first = true;
     for (const auto& entry : graph)
     {
-        int userId = entry.first;
-        const std::vector<int>& followers = entry.second;
-        
-        if (followers.size() > maxFollowers)
-        {
-            maxFollowers = followers.size();
-            mostInfluencerId = userId;
+        if (first) {
+            maxFollowers = entry.second.size();
+            first = false;
+        } else {
+            if (entry.second.size() > maxFollowers) {
+                maxFollowers = entry.second.size();
+            }
+        }
+    }
+
+    // Second pass: collect all users with maxFollowers
+    for (const auto& entry : graph)
+    {
+        if (entry.second.size() == maxFollowers) {
+            mostInfluencerIds.push_back(entry.first);
         }
     }
     
-    if (mostInfluencerId == -1 && !graph.empty()) {
-        return graph.begin()->first;
-    }
-    
-    return mostInfluencerId;
+    return mostInfluencerIds;
 }
-std::string Graph::getMostInfluencerName()
+
+std::vector<std::string> Graph::getMostInfluencerName()
 {
-    return getName(getMostInfluencerId());
+    std::vector<int> ids = getMostInfluencerId();
+    std::vector<std::string> names;
+    for (int id : ids) {
+        names.push_back(getName(id));
+    }
+    return names;
 }
-int Graph::getMostActivePersonId()
+
+std::vector<int> Graph::getMostActivePersonId()
 {
     if (graph.empty()) {
-        return -1;
+        return {};
     }
     std::map<int, int> followingCounts;
     for (const auto& entry :  graph) {
@@ -228,19 +241,32 @@ int Graph::getMostActivePersonId()
         }
     }
     
-    int mostActiveId = -1;
     int maxFollowing = -1;
+    // Find max
     for (const auto& entry:followingCounts) {
         if (entry.second > maxFollowing) {
             maxFollowing = entry.second;
-            mostActiveId = entry.first;
         }
     }
-    return mostActiveId;
+
+    std::vector<int> mostActiveIds;
+    for (const auto& entry:followingCounts) {
+        if (entry.second == maxFollowing) {
+            mostActiveIds.push_back(entry.first);
+        }
+    }
+    
+    return mostActiveIds;
 }
-std::string Graph::getMostActivePersonName()
+
+std::vector<std::string> Graph::getMostActivePersonName()
 {
-    return getName(getMostActivePersonId());
+    std::vector<int> ids = getMostActivePersonId();
+    std::vector<std::string> names;
+    for (int id : ids) {
+        names.push_back(getName(id));
+    }
+    return names;
 }
 int Graph::getMostActivePersonIdPosts()
 {

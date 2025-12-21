@@ -334,23 +334,15 @@ if(args[0]=="-w")
 }
 else if(args[0]=="-t")
 {
-                
-
         const std::string topicToSearch = args[1];
-         std::vector<PostMatch> results = searchPostsByTopic(content, topicToSearch);
+        std::vector<PostMatch> results = searchPostsByTopic(content, topicToSearch);
         printMatchesTopic(results);
-                return OK;
-
-
-
-
+            return OK;
 }
 else
 {
-
   std::cerr << "Usage start with :  -w or -t\n";
   return ERR_INVALID_OPTION;
-
 }
 }
 
@@ -375,9 +367,16 @@ int CLICommands::mostActiveCommand(const std::vector<std::string> &args)
     if(content == "") return ERR_FILE_NOT_FOUND;
     
     Graph graph(content);
-    int mostActivePersonId = graph.getMostActivePersonId();
-    std::string mostActivePersonName = graph.getName(mostActivePersonId);
-    std::cout << mostActivePersonId << ": " << mostActivePersonName << std::endl;
+    std::vector<int> mostActivePersonIds = graph.getMostActivePersonId();
+    
+    if (mostActivePersonIds.empty()) {
+        std::cout << "No active person found." << std::endl;
+    } else {
+        for (int id : mostActivePersonIds) {
+            std::string name = graph.getName(id);
+            std::cout << id << ": " << name << std::endl;
+        }
+    }
     return OK;
 }
 
@@ -400,9 +399,16 @@ int CLICommands::mostInfluencerCommand(const std::vector<std::string> &args)
     if(content == "") return ERR_FILE_NOT_FOUND;
     
     Graph graph(content);
-    int mostInfluencerPersonId = graph.getMostInfluencerId();
-    std::string mostInfluencerPersonName = graph.getName(mostInfluencerPersonId);
-    std::cout << mostInfluencerPersonId << ": " << mostInfluencerPersonName << std::endl;
+    std::vector<int> mostInfluencerPersonIds = graph.getMostInfluencerId();
+
+    if (mostInfluencerPersonIds.empty()) {
+        std::cout << "No influencer found." << std::endl;
+    } else {
+        for (int id : mostInfluencerPersonIds) {
+            std::string name = graph.getName(id);
+            std::cout << id << ": " << name << std::endl;
+        }
+    }
     return OK;
 }
 
@@ -434,8 +440,6 @@ int CLICommands::suggestCommand(const std::vector<std::string> &args)
         return ERR_INVALID_OPTION;
     }
 
-    
-
     std::string filename = args[1];
     std::string content = readFileToString(filename);
     if(content == "") return ERR_FILE_NOT_FOUND;
@@ -444,6 +448,5 @@ int CLICommands::suggestCommand(const std::vector<std::string> &args)
     std::vector<int> suggests = suggest(graph, id);
     printSuggestions(suggests);
 
-   
     return OK;
 }
