@@ -210,7 +210,6 @@ cd .\build\ .\ilovexml.exe <command>
 
 - Your **XML files must be inside the `build` folder** to run CLI mode easily.
 - You must build the project **at least once** so that `ilovexml.exe` exists.
-- GUI and CLI both use the **same executable**.
 
 ---
 
@@ -220,7 +219,7 @@ cd .\build\ .\ilovexml.exe <command>
 | :--- | :--- |
 | **Amr Ahmed** | [amr10w](https://github.com/amr10w) |
 | **Ali Ahmed** | [aliabdelmaboud](https://github.com/aliabdelmaboud) |
-| **Mohamed Elsayed** | [ZICKMO](https://github.com/ZICKMO) |
+| **Mohamed Hamouda** | [ZICKMO](https://github.com/ZICKMO) |
 | **Omar Mohamed** | [Omarzcode](https://github.com/Omarzcode) |
 | **Ammar Mohamed** | [ammar-abdelghany30](https://github.com/ammar-abdelghany30) |
 | **Hamza Basem** | [Hamza-Eldefrawy](https://github.com/Hamza-Eldefrawy) |
