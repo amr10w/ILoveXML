@@ -11,12 +11,19 @@ XML Social Network Analyzer is a desktop application that parses, analyzes, and 
 
 ## Installer
 
-To facilitate seamless deployment, the development team utilized Inno Setup to generate a standalone executable installer (.exe). This installation package efficiently bundles all required Dynamic Link Libraries (DLLs) using high-ratio compression, ensuring that the software has all necessary runtime dependencies without requiring manual configuration by the user.
+To facilitate seamless deployment, the development team utilized Inno Setup to generate a standalone executable installer (`.exe`). This installation package efficiently bundles all required Dynamic Link Libraries (DLLs) using high-ratio compression, ensuring that the software has all necessary runtime dependencies without requiring manual configuration by the user.
 
-[**Download Installer**](https://github.com/amr10w/XML-Social-Network-Analyzer/tree/main/installation)
+###  How to Download
+You can download the latest stable version directly from the **Releases** page:
 
-Furthermore, the installation script is configured to automatically append the application’s binary directory to the Windows PATH environment variable. This critical configuration enables global command-line accessibility, allowing the user to invoke the CLI tool simply by typing ilovexml from any command prompt location, thereby eliminating the need to reference the absolute file path.
+👉 [**Download Latest Release**](https://github.com/amr10w/XML-Social-Network-Analyzer/releases/latest)
 
+1. Click the link above.
+2. Look under the **Assets** section.
+3. Select `ilovexml_installer.exe` to download.
+
+### Global Access
+The installation script is configured to automatically append the application’s binary directory to the Windows `PATH` environment variable. This critical configuration enables global command-line accessibility, allowing the user to invoke the CLI tool simply by typing `ilovexml` from any command prompt location, thereby eliminating the need to reference the absolute file path.
 ## Demo Video
 https://github.com/user-attachments/assets/3feee4ce-2742-4cc5-8aa2-45d700f5e1cc
 ## How to Build & Run the Project 
