@@ -1,224 +1,180 @@
 # XML-Social-Network-Analyzer
 
-XML Social Network Analyzer is a desktop application that parses, analyzes, and visualizes social network data stored in XML files. It supports operations like XML validation, formatting, minifying, JSON conversion, and compression. The tool also represents user relationships as a graph and provides network analysis features such as identifying influencers, mutual followers, and suggesting connections.
+![C++](https://img.shields.io/badge/Language-C++-00599C?style=flat&logo=c%2B%2B)
+![Qt 6](https://img.shields.io/badge/Framework-Qt_6.5-41CD52?style=flat&logo=qt)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+XML Social Network Analyzer is a comprehensive desktop application that parses, analyzes, and visualizes social network data stored in XML files. It provides a wide range of features for manipulating XML data, including validation, formatting, compression, and conversion to JSON. Additionally, the application offers powerful tools for analyzing and visualizing user relationships as a directed graph, identifying influencers, mutual followers, and suggesting connections.
 
 ## Table of Contents
-- [Installer](#installer)
+- [Description](#description)
 - [Demo Video](#demo-video)
-- [How to Build & Run the Project](#how-to-build--run-the-project)
-- [Running in Command Line Mode](#running-in-command-line-mode)
+- [Built With](#built-with)
+- [Project Structure](#project-structure)
+- [Features](#features)
+    - [XML Processing](#xml-processing)
+    - [Graph Visualization](#graph-visualization)
+    - [Network Analysis](#network-analysis)
+    - [Search](#search)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [GUI Mode](#gui-mode)
+    - [CLI Mode](#cli-mode)
+- [Troubleshooting](#troubleshooting)
 - [Team Members](#team-members)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Installer
+## Description
 
-To facilitate seamless deployment, the development team utilized Inno Setup to generate a standalone executable installer (`.exe`). This installation package efficiently bundles all required Dynamic Link Libraries (DLLs) using high-ratio compression, ensuring that the software has all necessary runtime dependencies without requiring manual configuration by the user.
+This application acts as both a robust XML editor and a social network analysis tool. Whether you need to fix malformed XML, minify a file for production, or explore the intricate connections between users in a social network, XML-Social-Network-Analyzer has you covered.
 
-###  How to Download
-You can download the latest stable version directly from the **Releases** page:
+![Main Application Window](docs/images/main_window.png) <!-- Main Application Window -->
 
-👉 [**Download Latest Release**](https://github.com/amr10w/XML-Social-Network-Analyzer/releases/latest)
-
-1. Click the link above.
-2. Look under the **Assets** section.
-3. Select `ilovexml_installer.exe` to download.
-
-### Global Access
-The installation script is configured to automatically append the application’s binary directory to the Windows `PATH` environment variable. This critical configuration enables global command-line accessibility, allowing the user to invoke the CLI tool simply by typing `ilovexml` from any command prompt location, thereby eliminating the need to reference the absolute file path.
 ## Demo Video
-https://github.com/user-attachments/assets/3feee4ce-2742-4cc5-8aa2-45d700f5e1cc
-## How to Build & Run the Project 
 
-This guide explains how to set up, build, and run the **XML Social Network Analyzer** using **VS Code**, **Qt 6**, and **CMake**.
+[Watch the Demo Video](https://github.com/user-attachments/assets/3feee4ce-2742-4cc5-8aa2-45d700f5e1cc)
 
----
+## Built With
 
-### **Required Tools (Install Before Running)**
+*   **Language**: C++
+*   **GUI Framework**: Qt 6.5
+*   **Build System**: CMake
+*   **Visualization**: Graphviz
 
-|Tool|Purpose|Download Link|
-|---|---|---|
-|**Qt 6+**|GUI framework|[https://www.qt.io/](https://www.qt.io/)|
-|**CMake**|Build system|[https://cmake.org/download/](https://cmake.org/download/)|
-|**VS Code Extensions**|Required inside VS Code|- _Qt Tools_  <br>- _CMake Tools_|
+## Project Structure
 
----
-
-### **Clone the Repository**
-
-Open terminal and run:
-```sh
-git clone https://github.com/amr10w/XML-Social-Network-Analyzer.git
+```text
+src
+├── CLI             # Command-Line Interface logic
+├── UI              # User Interface implementation
+│   └── pages       # Individual pages for the GUI application
+├── app             # Application entry points (Main, GUI, CLI)
+└── core            # Core logic (XML operations, Graph algorithms, Search, etc.)
 ```
 
+## Features
 
-Then open the repository folder in **VS Code**.
+### XML Processing
+*   **Validation**: Ensures XML files are well-formed. Detects errors such as unclosed tags and structural inconsistencies.
+*   **Error Correction**: Automatically fixes detectable errors in XML files.
+*   **Formatting (Prettifying)**: Indents nested elements and adds newlines to make XML readable.
+*   **Minification**: Removes unnecessary whitespace and newlines to reduce file size.
+*   **JSON Conversion**: Converts XML data to JSON format for compatibility with modern web tools.
+*   **Compression**: Uses Byte Pair Encoding (BPE) to compress XML text files efficiently.
+*   **Decompression**: Restores compressed `.comp` files back to their original XML format.
 
----
+### Graph Visualization
+*   **Graph Representation**: Visualizes user relationships as a directed graph where nodes are users and edges are follows.
+*   **Interactive View**: Explore the network visually.
 
-### **Step 1 — Register Qt in VS Code**
-
-1. Press **Ctrl + Shift + P**
-2. Search: **Qt: Register Qt Installation**
-3. Choose the Qt folder you installed (for example):
-
-```sh
-D:\Qt
-```
-
-- This allows the VS Code Qt extension to detect `qmake`, Qt libraries, and tools.
-
----
-
-###  **Step 2 — Configure CMake Tools**
-
-1. Press **Ctrl + Shift + P**
-2. Search: **CMake: Quick Start**  
-	(only the first time to let CMake configure the project)
-3. Press **Ctrl + Shift + P** again
-4. Search: **CMake: Select a Kit**
-5. Choose the kit that corresponds to **Qt 6** (e.g., _minjw or _MSVC + Qt_ or _GCC + Qt_).
-
----
-
-### **Step 3 — Build & Run the Project**
-
-#### ▶️ **Run in GUI Mode (Normal Application Run)**
-
-Try:
-``` sh
-Ctrl + Shift + F5
-```
+![Graph View](docs/images/graph_view.png) <!-- Graph View -->
 
 
-If this works, the GUI will start directly.
+### Network Analysis
+*   **Influential Users**: Identifies users with the most followers (highest in-degree).
+*   **Active Users**: Identifies users who follow the most people (highest out-degree).
+*   **Mutual Followers**: Finds users followed by a set of given users.
+*   **Follow Suggestions**: Suggests new friends based on "friends of friends" logic.
 
-#### If Ctrl+Shift+F5 doesn’t work:
 
-You can:
+### Search
+*   **Keyword Search**: Find posts containing specific words.
+*   **Topic Search**: Find posts related to specific topics using text analysis.
 
-#### Option A — Build using CMake Tools
+## Installation
 
-1. Click **Build** (bottom status bar in VS Code)
-2. When build finishes, you can run the target from VS Code.
+### Installer
+You can download the latest installer directly from our [Releases Page](https://github.com/amr10w/ILoveXML/releases/latest).
 
-#### Option B — Create a debug configuration
+1.  Go to the **[Releases Page](https://github.com/amr10w/ILoveXML/releases/latest)**.
+2.  Scroll down to the **Assets** section.
+3.  Click on **`ilovexml_installer.exe`** to download it.
+4.  Run the installer and follow the instructions to set up the app.
 
-1. Press **Ctrl + Shift + D**
-2. Click **Create launch.json**
-3. Choose:
-```nginx
-Qt: Debug with cppvsdbg (Windows)
-```
+> **Note:** If you are a developer and want to inspect the code, you can download `Source code (zip)` instead.
 
-Then run using:
+### Build from Source
+If you prefer to build the project yourself using VS Code, Qt, and CMake, please refer to our detailed guide:
 
-`Ctrl + Shift + F5`
+[**How to Build & Run the Project**](docs/BUILD_AND_RUN.md)
 
-This always starts the **GUI Mode**.
+## Usage
 
----
+### GUI Mode
+Simply run the installed executable or the built target to launch the graphical interface. The GUI provides intuitive buttons for all operations, file browsing, and visualization.
 
-## Running in Command Line Mode
+### CLI Mode
+The application can be run in Command Line Interface mode for automation or headless environments.
 
-After the first GUI run, your build folder will contain:
-
-```sh
-ilovexml.exe
-```
-
-To run CLI mode:
-
-```sh
-cd .\build\ .\ilovexml.exe <command>
-```
-
-###  **Available Commands**
+> **Note:** If you installed the app using the installer, you can run commands directly in CMD or PowerShell using `ilovexml` (without `.exe`) from any location.
 
 #### Validate XML
+```bash
+# Check consistency
+ilovexml verify -i input.xml
 
-```sh
-.\ilovexml.exe verify -i test.xml
-# With formatting and output
-.\ilovexml.exe verify -i test.xml -f -o fixed.xml
+# Fix errors and save
+ilovexml verify -i input.xml -f -o fixed.xml
 ```
 
-#### Minify XML
-
-```sh
-.\ilovexml.exe mini -i in.xml -o out.xml
+#### Format (Prettify)
+```bash
+ilovexml format -i input.xml -o output.xml
 ```
 
-#### Format XML (Prettify)
-
-```sh
-.\ilovexml.exe format -i input.xml -o formatted.xml
+#### Minify
+```bash
+ilovexml mini -i input.xml -o output.xml
 ```
 
 #### Convert to JSON
-
-```sh
-.\ilovexml.exe json -i input.xml -o output.json
+```bash
+ilovexml json -i input.xml -o output.json
 ```
 
-#### Compress XML
+#### Compress & Decompress
+```bash
+# Compress
+ilovexml compress -i data.xml -o data.comp
 
-```sh
-.\ilovexml.exe compress -i sample.xml -o sample.comp
+# Decompress
+ilovexml decompress -i data.comp -o restored.xml
 ```
 
-#### Decompress XML
+#### Network Analysis
+```bash
+# Most Active User
+ilovexml most_active -i data.xml
 
-```sh
-.\ilovexml.exe decompress -i sample.comp -o sample_decompressed.xml
-```
+# Most Influential User
+ilovexml most_influencer -i data.xml
 
-#### Mutual Followers
+# Mutual Followers (comma-separated IDs)
+ilovexml mutual -i data.xml -ids 1,2,3
 
-```sh
-.\ilovexml.exe mutual -i data.xml -ids 1,2,3
-```
-
-#### Visualize Graph
-
-```sh
-.\ilovexml.exe draw -i data.xml -o graph.png
+# Suggest Friends
+ilovexml suggest -i data.xml -id 1
 ```
 
 #### Search
+```bash
+# Search by Word
+ilovexml search -w "keyword" -i data.xml
 
-```sh
-# By Word
-.\ilovexml.exe search -w wordToSearch -i data.xml
-
-# By Topic
-.\ilovexml.exe search -t topicToSearch -i data.xml
+# Search by Topic
+ilovexml search -t "topic" -i data.xml
 ```
 
-#### Most Active User
-
-```sh
-.\ilovexml.exe most_active -i data.xml
+#### Visualize
+```bash
+ilovexml draw -i data.xml -o graph.png
 ```
 
-#### Most Influential User
+## Troubleshooting
 
-```sh
-.\ilovexml.exe most_influencer -i data.xml
-```
-
-#### Suggest Friends
-
-```sh
-.\ilovexml.exe suggest -i data.xml -id 123
-```
-
----
-
-### Important Notes
-
-- Your **XML files must be inside the `build` folder** to run CLI mode easily.
-- You must build the project **at least once** so that `ilovexml.exe` exists.
-
----
+-   **Common XML Parsing Errors**: If validation fails mysteriously, check for hidden characters or encoding issues in your XML file. Ensure the file starts with a valid XML declaration.
+-   **Qt Path Issues**: If building from source fails, ensure your Qt kit is correctly selected in VS Code (CMake Tools extension) and that the Qt bin directory is in your system PATH if running outside the deployed environment.
 
 ## Team Members
 
@@ -233,3 +189,15 @@ cd .\build\ .\ilovexml.exe <command>
 | **Anas Ayman** | [Anas-Elsab3](https://github.com/Anas-Elsab3) |
 | **Ahmed Ezzat** | [Labolabo-1](https://github.com/Labolabo-1) |
 | **Ahmed Ramadan** | [ahmedramadan2025](https://github.com/ahmedramadan2025) |
+
+## Contributing
+
+1.  Fork the repository.
+2.  Create a new branch for your feature (`git checkout -b feature/NewFeature`).
+3.  Commit your changes (`git commit -m 'Add new feature'`).
+4.  Push to the branch (`git push origin feature/NewFeature`).
+5.  Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/amr10w/ILoveXML/blob/docs/update-readme/LICENSE) file for more details.
