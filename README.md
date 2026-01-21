@@ -20,6 +20,7 @@ XML Social Network Analyzer is a comprehensive desktop application that parses, 
 - [Usage](#usage)
     - [GUI Mode](#gui-mode)
     - [CLI Mode](#cli-mode)
+- [API Documentation](#api-documentation)
 - [Troubleshooting](#troubleshooting)
 - [Team Members](#team-members)
 - [Contributing](#contributing)
@@ -34,6 +35,7 @@ This application acts as both a robust XML editor and a social network analysis 
 ## Demo Video
 
 [Watch the Demo Video](https://github.com/user-attachments/assets/3feee4ce-2742-4cc5-8aa2-45d700f5e1cc)
+
 
 ## Built With
 
@@ -170,6 +172,15 @@ ilovexml search -t "topic" -i data.xml
 ```bash
 ilovexml draw -i data.xml -o graph.png
 ```
+
+## API Documentation
+
+**[View Complete API Documentation](https://amr10w.github.io/ILoveXML/index.html)**
+
+Explore the comprehensive API documentation with:
+- **Advanced Search** - Search for any function, method, or class
+- **Detailed References** - Complete documentation for all modules
+- **Interactive UI** - Smooth navigation with enhanced visuals
 
 ## Troubleshooting
 
