@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview - ILove XML Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Consolas&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="top-bar">
+        <div class="logo"><a href="index.html">ILove XML</a> <span class="version">v1.0</span></div>
+        <div class="search-container">
+            <input type="text" id="classSearch" placeholder="Search documentation..." onkeyup="filterClasses()">
+        </div>
+        <nav class="top-nav">
+            <a href="index.html" class="active">Overview</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <h3>Documentation</h3>
+
+            <div class="sidebar-category">Overview</div>
+            <ul>
+                <li><a href="index.html" class="active-page">Overview</a></li>
+            </ul>
+
+            <div class="sidebar-category">Core (Backend)</div>
+            <ul id="coreList">
+                <li><a href="BPE.html">BPE</a></li>
+                <li><a href="Compress.html">Compress</a></li>
+                <li><a href="Decompress.html">Decompress</a></li>
+                <li><a href="FileUtils.html">FileUtils</a></li>
+                <li><a href="Graph.html">Graph</a></li>
+                <li><a href="GraphVisualizer.html">GraphVisualizer</a></li>
+                <li><a href="GraphvizWrapper.html">GraphvizWrapper</a></li>
+                <li><a href="JsonConverter.html">JsonConverter</a></li>
+                <li><a href="Mutual.html">Mutual</a></li>
+                <li><a href="SearchTopic.html">SearchTopic</a></li>
+                <li><a href="SearchWord.html">SearchWord</a></li>
+                <li><a href="SimpleMap.html">SimpleMap</a></li>
+                <li><a href="Suggest.html">Suggest</a></li>
+                <li><a href="Tree.html">Tree</a></li>
+                <li><a href="XMLMinifier.html">XMLMinifier</a></li>
+                <li><a href="XMLValidator.html">XMLValidator</a></li>
+            </ul>
+
+            <div class="sidebar-category">CLI</div>
+            <ul id="cliList">
+                <li><a href="CLICommands.html">CLICommands</a></li>
+            </ul>
+
+            <div class="sidebar-category">UI (Qt/C++)</div>
+            <ul id="uiList">
+                <li><a href="mainwindow.html">mainwindow</a></li>
+                <li><a href="AboutPage.html">AboutPage</a></li>
+                <li><a href="CompressPage.html">CompressPage</a></li>
+                <li><a href="DecompressPage.html">DecompressPage</a></li>
+                <li><a href="formattingPage.html">formattingPage</a></li>
+                <li><a href="graphPage.html">graphPage</a></li>
+            </ul>
+        </aside>
+
+        <!-- Content -->
+        <main class="content">
+            <div class="header-section">
+                <h1>Overview</h1>
+                <p>Welcome to the <strong>ILove XML</strong> project documentation. This system is divided into three
+                    main layers: Core Backend logic, Command Line Interface, and User Interface.</p>
+            </div>
+
+            <section class="summary">
+                <h2>Modules</h2>
+
+                <h3>Core (Backend Logic)</h3>
+                <table class="summary-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><a href="BPE.html">BPE</a></td>
+                        <td>Byte Pair Encoding compression algorithm logic.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Compress.html">Compress</a></td>
+                        <td>High-level interfaces for file compression.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Decompress.html">Decompress</a></td>
+                        <td>Decompression routines for BPE-encoded files.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="FileUtils.html">FileUtils</a></td>
+                        <td>File reading, writing, and tokenization utilities.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Graph.html">Graph</a></td>
+                        <td>Graph data structure for social network analysis.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="GraphVisualizer.html">GraphVisualizer</a></td>
+                        <td>Generates visual representations of the graph using Graphviz.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="GraphvizWrapper.html">GraphvizWrapper</a></td>
+                        <td>Wrapper for Graphviz library integration.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="JsonConverter.html">JsonConverter</a></td>
+                        <td>Converts XML tree structures to JSON format.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Mutual.html">Mutual</a></td>
+                        <td>Mutual follower calculation logic.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="SearchTopic.html">SearchTopic</a></td>
+                        <td>Search posts by topic tags.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="SearchWord.html">SearchWord</a></td>
+                        <td>Search posts by keyword content.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="SimpleMap.html">SimpleMap</a></td>
+                        <td>Custom hash map data structure implementation.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Suggest.html">Suggest</a></td>
+                        <td>Friend suggestion algorithm based on mutual connections.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="Tree.html">Tree</a></td>
+                        <td>Generic tree data structure for XML parsing.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="XMLMinifier.html">XMLMinifier</a></td>
+                        <td>XML whitespace removal and minification.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="XMLValidator.html">XMLValidator</a></td>
+                        <td>XML syntax validation and error correction.</td>
+                    </tr>
+                </table>
+
+                <h3>CLI</h3>
+                <table class="summary-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><a href="CLICommands.html">CLICommands</a></td>
+                        <td>Handles command-line arguments and dispatches actions.</td>
+                    </tr>
+                </table>
+
+                <h3>UI (Qt/C++)</h3>
+                <table class="summary-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><a href="mainwindow.html">mainwindow</a></td>
+                        <td>Main application window managing navigation and pages.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="AboutPage.html">AboutPage</a></td>
+                        <td>About dialog displaying project information and team details.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="CompressPage.html">CompressPage</a></td>
+                        <td>UI page for XML file compression using BPE.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="DecompressPage.html">DecompressPage</a></td>
+                        <td>UI page for decompressing BPE-encoded files.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="formattingPage.html">formattingPage</a></td>
+                        <td>XML prettifying and formatting page.</td>
+                    </tr>
+                    <tr>
+                        <td><a href="graphPage.html">graphPage</a></td>
+                        <td>Visualization page for the social network graph.</td>
+                    </tr>
+                </table>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
