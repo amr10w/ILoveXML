@@ -107,68 +107,68 @@ Simply run the installed executable or the built target to launch the graphical 
 ### CLI Mode
 The application can be run in Command Line Interface mode for automation or headless environments.
 
-> **Note**: All XML files should ideally be in your working directory or provide the full path.
+> **Note:** If you installed the app using the installer, you can run commands directly in CMD or PowerShell using `ilovexml` (without `.exe`) from any location.
 
 #### Validate XML
 ```bash
 # Check consistency
-ilovexml.exe verify -i input.xml
+ilovexml verify -i input.xml
 
 # Fix errors and save
-ilovexml.exe verify -i input.xml -f -o fixed.xml
+ilovexml verify -i input.xml -f -o fixed.xml
 ```
 
 #### Format (Prettify)
 ```bash
-ilovexml.exe format -i input.xml -o output.xml
+ilovexml format -i input.xml -o output.xml
 ```
 
 #### Minify
 ```bash
-ilovexml.exe mini -i input.xml -o output.xml
+ilovexml mini -i input.xml -o output.xml
 ```
 
 #### Convert to JSON
 ```bash
-ilovexml.exe json -i input.xml -o output.json
+ilovexml json -i input.xml -o output.json
 ```
 
 #### Compress & Decompress
 ```bash
 # Compress
-ilovexml.exe compress -i data.xml -o data.comp
+ilovexml compress -i data.xml -o data.comp
 
 # Decompress
-ilovexml.exe decompress -i data.comp -o restored.xml
+ilovexml decompress -i data.comp -o restored.xml
 ```
 
 #### Network Analysis
 ```bash
 # Most Active User
-ilovexml.exe most_active -i data.xml
+ilovexml most_active -i data.xml
 
 # Most Influential User
-ilovexml.exe most_influencer -i data.xml
+ilovexml most_influencer -i data.xml
 
 # Mutual Followers (comma-separated IDs)
-ilovexml.exe mutual -i data.xml -ids 1,2,3
+ilovexml mutual -i data.xml -ids 1,2,3
 
 # Suggest Friends
-ilovexml.exe suggest -i data.xml -id 1
+ilovexml suggest -i data.xml -id 1
 ```
 
 #### Search
 ```bash
 # Search by Word
-ilovexml.exe search -w "keyword" -i data.xml
+ilovexml search -w "keyword" -i data.xml
 
 # Search by Topic
-ilovexml.exe search -t "topic" -i data.xml
+ilovexml search -t "topic" -i data.xml
 ```
 
 #### Visualize
 ```bash
-ilovexml.exe draw -i data.xml -o graph.png
+ilovexml draw -i data.xml -o graph.png
 ```
 
 ## Troubleshooting
