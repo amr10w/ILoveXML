@@ -29,7 +29,7 @@ XML Social Network Analyzer is a comprehensive desktop application that parses, 
 
 This application acts as both a robust XML editor and a social network analysis tool. Whether you need to fix malformed XML, minify a file for production, or explore the intricate connections between users in a social network, XML-Social-Network-Analyzer has you covered.
 
-![Main Application Window](docs/images/main_window.png) <!-- Main Application Window -->
+![Main Application Window](guides/images/main_window.png) <!-- Main Application Window -->
 
 ## Demo Video
 
@@ -68,7 +68,7 @@ src
 *   **Graph Representation**: Visualizes user relationships as a directed graph where nodes are users and edges are follows.
 *   **Interactive View**: Explore the network visually.
 
-![Graph View](docs/images/graph_view.png) <!-- Graph View -->
+![Graph View](guides/images/graph_view.png) <!-- Graph View -->
 
 
 ### Network Analysis
@@ -97,7 +97,7 @@ You can download the latest installer directly from our [Releases Page](https://
 ### Build from Source
 If you prefer to build the project yourself using VS Code, Qt, and CMake, please refer to our detailed guide:
 
-[**How to Build & Run the Project**](docs/BUILD_AND_RUN.md)
+[**How to Build & Run the Project**](guides/BUILD_AND_RUN.md)
 
 ## Usage
 
