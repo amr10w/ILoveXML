@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMLValidator - ILove XML Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Consolas&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <div class="logo"><a href="index.html">ILove XML</a> <span class="version">v1.0</span></div>
+        <div class="search-container">
+            <input type="text" id="classSearch" placeholder="Search documentation..." onkeyup="filterClasses()">
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Overview</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+    <h3>Documentation</h3>
+
+    <div class="sidebar-category">Overview</div>
+    <ul>
+        <li><a href="index.html">Overview</a></li>
+    </ul>
+
+    <div class="sidebar-category">Core (Backend)</div>
+    <ul id="coreList">
+        <li><a href="BPE.html">BPE</a></li>
+        <li><a href="Compress.html">Compress</a></li>
+        <li><a href="Decompress.html">Decompress</a></li>
+        <li><a href="FileUtils.html">FileUtils</a></li>
+        <li><a href="Graph.html">Graph</a></li>
+        <li><a href="GraphVisualizer.html">GraphVisualizer</a></li>
+        <li><a href="GraphvizWrapper.html">GraphvizWrapper</a></li>
+        <li><a href="JsonConverter.html">JsonConverter</a></li>
+        <li><a href="Mutual.html">Mutual</a></li>
+        <li><a href="SearchTopic.html">SearchTopic</a></li>
+        <li><a href="SearchWord.html">SearchWord</a></li>
+        <li><a href="SimpleMap.html">SimpleMap</a></li>
+        <li><a href="Suggest.html">Suggest</a></li>
+        <li><a href="Tree.html">Tree</a></li>
+        <li><a href="XMLMinifier.html">XMLMinifier</a></li>
+        <li><a href="XMLValidator.html">XMLValidator</a></li>
+    </ul>
+
+    <div class="sidebar-category">CLI</div>
+    <ul id="cliList">
+        <li><a href="CLICommands.html">CLICommands</a></li>
+    </ul>
+
+    <div class="sidebar-category">UI (Qt/C++)</div>
+    <ul id="uiList">
+        <li><a href="mainwindow.html">mainwindow</a></li>
+        <li><a href="AboutPage.html">AboutPage</a></li>
+        <li><a href="CompressPage.html">CompressPage</a></li>
+        <li><a href="DecompressPage.html">DecompressPage</a></li>
+        <li><a href="formattingPage.html">formattingPage</a></li>
+        <li><a href="graphPage.html">graphPage</a></li>
+    </ul>
+</aside>
+
+        <main class="content">
+            <div class="header-section">
+                <span class="package-name">src/core/XMLValidator.h</span>
+                <h1>XMLValidator <span class="badge badge-module">[Module]</span></h1>
+            </div>
+
+            <section class="description">
+                <h2>Description</h2>
+                <p>
+                    The <code>XMLValidator</code> module provides XML validation and error correction functionalities.
+                </p>
+            </section>
+
+            <section class="methods">
+                <h2>Functions</h2>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre
+                            class="method-signature">std::pair&lt;bool, std::vector&lt;Error&gt;&gt; verify(const std::string& content)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Verifies XML structure and returns validation status with any detected
+                            errors.</div>
+
+                        <span class="label-title">Parameters</span>
+                        <ul class="param-list">
+                            <li><span class="param-name">content</span>: Raw XML content string.</li>
+                        </ul>
+
+                        <span class="label-title">Returns</span>
+                        <div class="returns-desc">Pair of bool (isValid) and vector of Error structures.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre
+                            class="method-signature">std::pair&lt;int, int&gt; countErrorSummary(const std::string& content)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Counts total XML errors.</div>
+
+                        <span class="label-title">Returns</span>
+                        <div class="returns-desc">Pair of integers representing different error counts.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">std::string fixXml(const std::string& content)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Attempts to auto-fix XML errors by correcting tag mismatches and
+                            structural issues.</div>
+
+                        <span class="label-title">Returns</span>
+                        <div class="returns-desc">Fixed XML string.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">bool isClosingTag(const std::string& tag)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Checks if a tag string represents a closing tag.</div>
+
+                        <span class="label-title">Returns</span>
+                        <div class="returns-desc"><code>true</code> if the tag is a closing tag.</div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

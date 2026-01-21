@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>graphPage - ILove XML Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Consolas&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <div class="logo"><a href="index.html">ILove XML</a> <span class="version">v1.0</span></div>
+        <div class="search-container">
+            <input type="text" id="classSearch" placeholder="Search documentation..." onkeyup="filterClasses()">
+        </div>
+        <nav class="top-nav">
+            <a href="index.html">Overview</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <h3>Documentation</h3>
+
+            <div class="sidebar-category">Overview</div>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+            </ul>
+
+            <div class="sidebar-category">Core (Backend)</div>
+            <ul id="coreList">
+                <li><a href="BPE.html">BPE</a></li>
+                <li><a href="Compress.html">Compress</a></li>
+                <li><a href="Decompress.html">Decompress</a></li>
+                <li><a href="FileUtils.html">FileUtils</a></li>
+                <li><a href="Graph.html">Graph</a></li>
+                <li><a href="GraphVisualizer.html">GraphVisualizer</a></li>
+                <li><a href="GraphvizWrapper.html">GraphvizWrapper</a></li>
+                <li><a href="JsonConverter.html">JsonConverter</a></li>
+                <li><a href="Mutual.html">Mutual</a></li>
+                <li><a href="SearchTopic.html">SearchTopic</a></li>
+                <li><a href="SearchWord.html">SearchWord</a></li>
+                <li><a href="SimpleMap.html">SimpleMap</a></li>
+                <li><a href="Suggest.html">Suggest</a></li>
+                <li><a href="Tree.html">Tree</a></li>
+                <li><a href="XMLMinifier.html">XMLMinifier</a></li>
+                <li><a href="XMLValidator.html">XMLValidator</a></li>
+            </ul>
+
+            <div class="sidebar-category">CLI</div>
+            <ul id="cliList">
+                <li><a href="CLICommands.html">CLICommands</a></li>
+            </ul>
+
+            <div class="sidebar-category">UI (Qt/C++)</div>
+            <ul id="uiList">
+                <li><a href="mainwindow.html">mainwindow</a></li>
+                <li><a href="AboutPage.html">AboutPage</a></li>
+                <li><a href="CompressPage.html">CompressPage</a></li>
+                <li><a href="DecompressPage.html">DecompressPage</a></li>
+                <li><a href="formattingPage.html">formattingPage</a></li>
+                <li><a href="graphPage.html" class="active-page">graphPage</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <div class="header-section">
+                <span class="package-name">src/UI/pages/graphPage.h</span>
+                <h1>GraphPage <span class="badge badge-class">[Class]</span></h1>
+            </div>
+
+            <section class="description">
+                <h2>Description</h2>
+                <p>
+                    The <code>GraphPage</code> class provides a UI for generating and visualizing social network graphs
+                    from XML data.
+                    It supports both Graphviz-based rendering and a fallback Qt-based rendering system.
+                </p>
+            </section>
+
+            <section class="methods">
+                <h2>Public Methods</h2>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">explicit GraphPage(QWidget *parent = nullptr)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Constructor initializes the graph page.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">~GraphPage()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Destructor cleans up resources.</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="methods">
+                <h2>Slots</h2>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void onBrowseFile()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Opens a file dialog to select an XML file.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void onGenerateGraph()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Triggers graph generation from the loaded XML data.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void onDownloadGraph()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Saves the generated graph image to a file.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void onBackToOperations()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Emits the backClicked signal.</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="methods">
+                <h2>Private Methods</h2>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void generateGraphImage()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Generates the graph visualization using Graphviz (if available).</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void generateFallbackGraphImage(const Graph& graph)</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Generates a fallback graph visualization using Qt graphics when
+                            Graphviz is unavailable.</div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">int countTotalEdges(const GRAPH& graphData) const</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Counts the total number of edges in the graph.</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="methods">
+                <h2>Signals</h2>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <pre class="method-signature">void backClicked()</pre>
+                    </div>
+                    <div class="method-body">
+                        <div class="method-desc">Emitted when navigating back.</div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
