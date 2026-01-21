@@ -29,7 +29,7 @@ XML Social Network Analyzer is a comprehensive desktop application that parses, 
 
 This application acts as both a robust XML editor and a social network analysis tool. Whether you need to fix malformed XML, minify a file for production, or explore the intricate connections between users in a social network, XML-Social-Network-Analyzer has you covered.
 
-![Main Application Window](path/to/placeholder.png) <!-- Main Application Window -->
+![Main Application Window](docs/images/main_window.png) <!-- Main Application Window -->
 
 ## Demo Video
 
@@ -68,7 +68,8 @@ src
 *   **Graph Representation**: Visualizes user relationships as a directed graph where nodes are users and edges are follows.
 *   **Interactive View**: Explore the network visually.
 
-![Graph View](path/to/placeholder.png) <!-- Graph View -->
+![Graph View](docs/images/graph_view.png) <!-- Graph View -->
+
 
 ### Network Analysis
 *   **Influential Users**: Identifies users with the most followers (highest in-degree).
@@ -76,7 +77,6 @@ src
 *   **Mutual Followers**: Finds users followed by a set of given users.
 *   **Follow Suggestions**: Suggests new friends based on "friends of friends" logic.
 
-![Analysis Results](path/to/placeholder.png) <!-- Analysis Results -->
 
 ### Search
 *   **Keyword Search**: Find posts containing specific words.
@@ -85,9 +85,14 @@ src
 ## Installation
 
 ### Installer
-For a quick setup, download the standalone installer. It comes with all necessary dependencies bundled.
+You can download the latest installer directly from our [Releases Page](https://github.com/amr10w/ILoveXML/releases/latest).
 
-[**Download Installer**](https://github.com/amr10w/XML-Social-Network-Analyzer/tree/main/installation)
+1.  Go to the **[Releases Page](https://github.com/amr10w/ILoveXML/releases/latest)**.
+2.  Scroll down to the **Assets** section.
+3.  Click on **`ilovexml_installer.exe`** to download it.
+4.  Run the installer and follow the instructions to set up the app.
+
+> **Note:** If you are a developer and want to inspect the code, you can download `Source code (zip)` instead.
 
 ### Build from Source
 If you prefer to build the project yourself using VS Code, Qt, and CMake, please refer to our detailed guide:
@@ -195,4 +200,4 @@ ilovexml.exe draw -i data.xml -o graph.png
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/amr10w/ILoveXML/blob/docs/update-readme/LICENSE) file for more details.
